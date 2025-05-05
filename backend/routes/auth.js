@@ -5,7 +5,6 @@ const User = require("../models/User");
 
 const router = express.Router();
 const JWT_SECRET = process.env.JWT_SECRET || "chovora_secret_key";
-console.log("🪪 Token Üretiminde Kullanılan JWT_SECRET:", JWT_SECRET);
 
 // (Register)
 router.post("/register", async (req, res) => {
