@@ -1,3 +1,5 @@
+import { baseURL } from "./config.js"; // config.js'den baseURL'i alıyoruz
+
 document.addEventListener("DOMContentLoaded", () => {
   const infoBox = document.getElementById("login-info-msg");
   const redirectPage = localStorage.getItem("redirectAfterLogin");
@@ -31,17 +33,17 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     try {
-      const res = await fetch("http://localhost:3000/api/auth/login", {
+      const res = await fetch(`${baseURL}/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        credentials: "include", // 🍪 Cookie ile giriş için gerekli
+        credentials: "include", //  Cookie ile giriş için gerekli
         body: JSON.stringify({ email, password }),
       });
 
       const data = await res.json();
 
       if (res.ok) {
-        await syncLocalCartToBackend(); // token olmadan çağrılacak (cookie kullanılacak)
+        await syncLocalCartToBackend();
 
         const redirect = localStorage.getItem("redirectAfterLogin");
         localStorage.removeItem("redirectAfterLogin");
@@ -64,12 +66,12 @@ async function syncLocalCartToBackend() {
   const localCart = JSON.parse(localStorage.getItem("cart")) || [];
   await Promise.all(
     localCart.map((product) =>
-      fetch("http://localhost:3000/api/cart", {
+      fetch(`${baseURL}/api/cart`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        credentials: "include", // 🍪 Cookie gönderimi
+        credentials: "include",
         body: JSON.stringify({ product }),
       })
     )

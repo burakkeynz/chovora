@@ -7,7 +7,7 @@ const router = express.Router();
 const JWT_SECRET = process.env.JWT_SECRET || "chovora_secret_key";
 console.log("🪪 Token Üretiminde Kullanılan JWT_SECRET:", JWT_SECRET);
 
-// 🧾 Kayıt (Register)
+// (Register)
 router.post("/register", async (req, res) => {
   const { name, email, password } = req.body;
 
@@ -32,7 +32,7 @@ router.post("/register", async (req, res) => {
   }
 });
 
-// 🔐 Giriş (Login)
+// (Login)
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
@@ -47,7 +47,6 @@ router.post("/login", async (req, res) => {
       expiresIn: "7d",
     });
 
-    // 🍪 Token'ı cookie olarak gönder
     res.cookie("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
@@ -65,7 +64,6 @@ router.post("/login", async (req, res) => {
   }
 });
 
-// 🍪 Cookie'den token kontrolü
 router.get("/check-auth", (req, res) => {
   const token = req.cookies.token;
 
@@ -81,7 +79,7 @@ router.get("/check-auth", (req, res) => {
   }
 });
 
-// 🚪 Çıkış (Logout)
+//(Logout)
 router.get("/logout", (req, res) => {
   res.clearCookie("token");
   res.status(200).json({ message: "Çıkış yapıldı." });

@@ -4,7 +4,7 @@ const Cart = require("../models/Cart");
 
 const router = express.Router();
 
-// 🛒 Sepeti Listele
+// Sepeti Listele
 router.get("/cart", verifyToken, async (req, res) => {
   try {
     const cartItems = await Cart.find({ userId: req.user.userId });
@@ -23,7 +23,7 @@ router.get("/cart", verifyToken, async (req, res) => {
   }
 });
 
-// ➕ Sepete Ürün Ekle
+// Sepete Ürün Ekle
 router.post("/cart", verifyToken, async (req, res) => {
   const { product } = req.body;
 
@@ -42,9 +42,9 @@ router.post("/cart", verifyToken, async (req, res) => {
     const newItem = new Cart({
       userId: req.user.userId,
       productId: product.productId,
-      name: product.name, // ✅ yeni eklendi
-      price: product.price, // ✅ yeni eklendi
-      image: product.image, // ✅ yeni eklendi
+      name: product.name,
+      price: product.price,
+      image: product.image,
       quantity: product.quantity || 1,
       addedAt: new Date(),
     });
@@ -56,7 +56,7 @@ router.post("/cart", verifyToken, async (req, res) => {
   }
 });
 
-// 🔄 Miktar Güncelle
+//  Miktar Güncelle
 router.put("/cart/:index", verifyToken, async (req, res) => {
   const { action } = req.body;
 
@@ -76,7 +76,7 @@ router.put("/cart/:index", verifyToken, async (req, res) => {
   }
 });
 
-// ❌ Ürün Sil
+//  Ürün Sil
 router.delete("/cart/:productId", verifyToken, async (req, res) => {
   try {
     await Cart.deleteOne({

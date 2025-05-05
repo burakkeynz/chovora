@@ -8,7 +8,7 @@ const cartItemSchema = new mongoose.Schema(
     image: String,
     quantity: { type: Number, default: 1 },
   },
-  { _id: false } // opsiyonel: her ürün için ekstra _id oluşturmaz
+  { _id: false } //
 );
 
 const userSchema = new mongoose.Schema({

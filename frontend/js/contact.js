@@ -1,10 +1,11 @@
+import { baseURL } from "./config.js"; // config.js'den baseURL'i alıyoruz
+
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.querySelector("form");
 
   form.addEventListener("submit", async function (e) {
-    e.preventDefault(); // sayfanın yenilenmesini engelle
+    e.preventDefault(); // default submit davranısını engelleme
 
-    // Form elemanlarının değerlerini al
     const name = form.elements[0].value.trim();
     const email = form.elements[1].value.trim();
     const phone = form.elements[2].value.trim();
@@ -16,7 +17,6 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // Gönderilecek veri
     const data = {
       name,
       email,
@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     try {
-      const response = await fetch("http://localhost:3000/api/contact", {
+      const response = await fetch(`${baseURL}/api/contact`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

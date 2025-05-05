@@ -1,3 +1,5 @@
+import { baseURL } from "./config.js"; // config.js URL
+
 document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll("button").forEach((btn) => {
     if (!btn.type || btn.type.toLowerCase() === "submit") {
@@ -16,18 +18,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const isCartEmpty = localCart.length === 0;
 
-  fetch("http://localhost:3000/api/auth/check-auth", {
+  fetch(`${baseURL}/api/auth/check-auth`, {
     credentials: "include",
   })
     .then((res) => {
       if (res.ok) {
-        loadCart(); // ✅ Giriş yapmış → backend'den yükle
+        loadCart();
       } else if (!isCartEmpty) {
         localStorage.setItem("redirectAfterLogin", "cart.html");
         localStorage.setItem("loginReason", "cartAccess");
         window.location.href = "login.html";
       } else {
-        renderEmptyCart(); // ❌ Giriş yok + localCart boş
+        renderEmptyCart();
       }
     })
     .catch(() => {
@@ -110,7 +112,7 @@ async function loadCart() {
   };
 
   try {
-    const res = await fetch("http://localhost:3000/api/cart", {
+    const res = await fetch(`${baseURL}/api/cart`, {
       credentials: "include",
     });
     if (!res.ok) throw new Error("API hatası");
@@ -137,7 +139,7 @@ function createQtyButton(sign, index, action) {
   return btn;
 }
 
-// 🔁 Miktar güncelle
+// Miktar güncelle
 async function updateQuantity(index, action, buttonElement) {
   const cartItem = buttonElement.closest(".cart-item");
   const quantitySpan = cartItem?.querySelector(".item-quantity");
@@ -148,7 +150,7 @@ async function updateQuantity(index, action, buttonElement) {
   if (action === "dec" && currentQuantity <= 1) return;
 
   try {
-    const res = await fetch(`http://localhost:3000/api/cart/${index}`, {
+    const res = await fetch(`${baseURL}/api/cart/${index}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -168,7 +170,7 @@ async function updateQuantity(index, action, buttonElement) {
   }
 }
 
-// 💸 Toplam fiyatı güncelle
+//  Toplam fiyatı güncelle
 function updateTotalPrice() {
   const cartItems = document.querySelectorAll(".cart-item");
   let total = 0;
@@ -184,7 +186,7 @@ function updateTotalPrice() {
   if (totalPriceEl) totalPriceEl.textContent = `₺${total.toFixed(2)}`;
 }
 
-// 🗑️ Silme işlemi
+//  Silme işlemi
 async function removeFromCart(buttonElement) {
   const cartItem = buttonElement.closest(".cart-item");
   const productId = cartItem?.dataset.productId;
@@ -192,7 +194,7 @@ async function removeFromCart(buttonElement) {
   if (!productId || !cartItem) return;
 
   try {
-    const res = await fetch(`http://localhost:3000/api/cart/${productId}`, {
+    const res = await fetch(`${baseURL}/api/cart/${productId}`, {
       method: "DELETE",
       credentials: "include",
     });
@@ -209,7 +211,7 @@ async function removeFromCart(buttonElement) {
   }
 }
 
-// 🛒 Boş sepet
+//  Boş sepet
 function renderEmptyCart() {
   document.getElementById("cart-items").innerHTML = "";
   document.getElementById("empty-cart").style.display = "block";

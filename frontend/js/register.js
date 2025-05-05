@@ -1,3 +1,5 @@
+import { baseURL } from "./config.js"; // config.js'den baseURL
+
 document
   .getElementById("register-form")
   .addEventListener("submit", async function (e) {
@@ -5,22 +7,22 @@ document
     const name = this.elements[0].value.trim();
     const email = this.elements[1].value.trim();
     const password = this.elements[2].value.trim();
-    const confirmPassword = this.elements[3].value.trim(); // Eklenen alan
+    const confirmPassword = this.elements[3].value.trim();
 
-    // 💥 Boş alan kontrolü
+    // Boş alan kontrolü
     if (!name || !email || !password || !confirmPassword) {
       alert("Lütfen tüm alanları doldurun.");
       return;
     }
 
-    // ❌ Şifre uyuşmazlığı kontrolü
+    // Şifre uyuşmazlığı kontrolü
     if (password !== confirmPassword) {
       alert("Şifreler uyuşmuyor.");
       return;
     }
 
     try {
-      const res = await fetch("http://localhost:3000/api/auth/register", {
+      const res = await fetch(`${baseURL}/api/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, password }),

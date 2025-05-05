@@ -1,4 +1,3 @@
-// backend/index.js
 require("dotenv").config(); // .env dosyasını yükle
 const path = require("path");
 const express = require("express");
@@ -14,30 +13,30 @@ const cartRoutes = require("./routes/cart");
 const favouriteRoutes = require("./routes/favourites");
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
+const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:5173";
 
-// 🟢 MongoDB Bağlantısı
 connectDB();
 
-// ✅ Middleware'ler önce gelmeli
+// Middleware'ler
 app.use(
   cors({
-    origin: "http://localhost:5173", // frontend domaini
+    origin: FRONTEND_URL, // Dinamik frontend URL
     credentials: true,
   })
 );
 app.use(cookieParser());
 app.use(bodyParser.json());
 
-// ✅ Rotalar
+// Rotalar
 app.use("/api/auth", authRoutes);
 app.use("/api", cartRoutes);
 app.use("/api", favouriteRoutes);
 
-// 📁 Statik dosyalar
+//  Statik dosyalar
 app.use(express.static(path.join(__dirname, "public")));
 
-// 📩 İletişim Formu
+//  İletişim Formu
 const transporter = nodemailer.createTransport({
   host: "smtp.zoho.eu",
   port: 465,
@@ -87,5 +86,9 @@ app.get("/", (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`✅ Backend çalışıyor: http://localhost:${PORT}`);
+  console.log(
+    `✅ Backend çalışıyor: ${
+      process.env.BACKEND_URL || "http://localhost:3000"
+    }`
+  );
 });

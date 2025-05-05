@@ -1,8 +1,9 @@
+import { baseURL } from "./config.js"; // config.js'den baseURi alıyoruz
+
 document.addEventListener("DOMContentLoaded", () => {
-  // Sayfa yüklendiğinde giriş durumu kontrolü
   (async () => {
     try {
-      const res = await fetch("http://localhost:3000/api/auth/check-auth", {
+      const res = await fetch(`${baseURL}/api/auth/check-auth`, {
         credentials: "include",
       });
 
@@ -16,7 +17,6 @@ document.addEventListener("DOMContentLoaded", () => {
         loginLink.style.display = "inline-block";
         logoutLink.style.display = "none";
 
-        // ❗ Eğer bu sayfa auth gerektiriyorsa yönlendir:
         const current = window.location.pathname;
         if (current.includes("favourites") || current.includes("cart")) {
           localStorage.setItem("redirectAfterLogin", current.split("/").pop());
@@ -34,14 +34,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
   logoutLink?.addEventListener("click", async (e) => {
     e.preventDefault();
-    await fetch("http://localhost:3000/api/auth/logout", {
+    await fetch(`${baseURL}/api/auth/logout`, {
       method: "GET",
       credentials: "include",
     });
     window.location.href = "logout.html";
   });
 
-  // 🛒 Ürün Kartı Tıklama
+  //  Ürün Kartı Tıklama
   document.querySelectorAll(".product-card").forEach((card) => {
     card.addEventListener("click", function (e) {
       if (e.target.closest(".buy-btn") || e.target.closest(".fav-btn")) return;
@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // 🛒 Sepete Ekle
+  //  Sepete Ekle
   document.querySelectorAll(".buy-btn").forEach((btn) => {
     btn.addEventListener("click", function () {
       const productCard = this.closest(".product-card");
@@ -76,12 +76,12 @@ document.addEventListener("DOMContentLoaded", () => {
       };
       console.log("📦 Sepete eklenen ürün:", product);
 
-      fetch("http://localhost:3000/api/auth/check-auth", {
+      fetch(`${baseURL}/api/auth/check-auth`, {
         credentials: "include",
       })
         .then((res) => {
           if (!res.ok) throw new Error("Giriş gerekli");
-          return fetch("http://localhost:3000/api/cart", {
+          return fetch(`${baseURL}/api/cart`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -100,10 +100,10 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // ⭐ Favoriler Linki
+  //  Favoriler Linki
   const favoritesLink = document.getElementById("favorites-link");
   favoritesLink?.addEventListener("click", () => {
-    fetch("http://localhost:3000/api/auth/check-auth", {
+    fetch(`${baseURL}/api/auth/check-auth`, {
       credentials: "include",
     })
       .then((res) => {
@@ -122,10 +122,10 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   });
 
-  // 🛒 Sepet Linki
+  //  Sepet Linki
   const cartLink = document.getElementById("cart-link");
   cartLink?.addEventListener("click", () => {
-    fetch("http://localhost:3000/api/auth/check-auth", {
+    fetch(`${baseURL}/api/auth/check-auth`, {
       credentials: "include",
     })
       .then((res) => {
@@ -151,7 +151,7 @@ document.addEventListener("DOMContentLoaded", () => {
     window.location.href = "login.html";
   });
 
-  // 🔍 Arama Öneri Sistemi
+  //  Arama Öneri Sistemi
   const searchInput = document.getElementById("search-input");
   const suggestionsBox = document.getElementById("suggestions");
 
@@ -206,7 +206,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-// 🔔 Toast Bildirimi
+// toast Bildirimi
 function showToast(message) {
   const container = document.getElementById("toast-container");
   if (!container) return;
@@ -220,11 +220,11 @@ function showToast(message) {
   setTimeout(() => toast.remove(), 3500);
 }
 
-// ⭐ Favorilere Ekle (şimdilik local çalışıyor, backend dönüşüm sırada)
+//  Favorilere Ekle
 function addToFavorites(productId) {
   if (!productId) return;
 
-  fetch("http://localhost:3000/api/favourites", {
+  fetch(`${baseURL}/api/favourites`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     credentials: "include",

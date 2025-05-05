@@ -1,9 +1,10 @@
+import { baseURL } from "./config.js"; // config.js'den baseURL'i alıyoruz
+
 document.addEventListener("DOMContentLoaded", () => {
   const container = document.getElementById("favorites-container");
   if (!container) return;
 
-  // 🍪 Giriş kontrolü ve favorileri çek
-  fetch("http://localhost:3000/api/favourites", {
+  fetch(`${baseURL}/api/favourites`, {
     method: "GET",
     credentials: "include",
   })
@@ -61,7 +62,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function removeFromFavorites(productId) {
-  fetch(`http://localhost:3000/api/favourites/${productId}`, {
+  fetch(`${baseURL}/api/favourites/${productId}`, {
     method: "DELETE",
     credentials: "include",
   })
@@ -74,7 +75,6 @@ function removeFromFavorites(productId) {
         setTimeout(() => cardToRemove.remove(), 300);
       }
 
-      // ✅ Toast göster
       showToast("Ürün favorilerden çıkarıldı ❌");
 
       const container = document.getElementById("favorites-container");
