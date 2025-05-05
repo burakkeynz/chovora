@@ -1,0 +1,192 @@
+main {
+  background-color: #fdf3e6;
+  color: #3b2f2f;
+  padding: 10px 80px;
+}
+
+/* ACCORDION CONTAINER */
+.accordion {
+  border-radius: 12px;
+  background-color: #fdf8f2;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+  margin-top: 24px;
+  padding: 0;
+  overflow: hidden;
+}
+
+/* ACCORDION ITEM */
+.accordion-item {
+  width: 100%;
+  background-color: transparent;
+  border-bottom: 1px solid #e2d8c7;
+}
+
+.accordion-item:first-child {
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+.accordion-item:last-child {
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+  border-bottom: none; /* son itemde çizgi istemiyorsan */
+}
+
+/* TOGGLE BUTTON */
+.accordion-toggle {
+  all: unset;
+  display: block;
+  width: 100%;
+  background-color: #d6af85;
+  text-align: left;
+  padding: 14px 24px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #1a0c0c;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.accordion-toggle:hover {
+  background-color: #c69b6f; /* Bir tık daha koyusu */
+  color: #2e1f1a; /* Daha koyu ama uyumlu bir yazı rengi */
+}
+
+/* CONTENT ALANI */
+.accordion-content {
+  background-color: #f9f3eb;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease, padding 0.4s ease;
+  padding: 0 24px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.accordion-item.active .accordion-content {
+  max-height: 300px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  overflow-y: auto;
+}
+
+.accordion-content p,
+.accordion-content ul {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #4a3c3c;
+}
+
+/* SCROLLBAR */
+.accordion-content::-webkit-scrollbar {
+  display: none;
+  width: 5px;
+}
+.accordion-content::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+.accordion-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* HEADER & NAV */
+.header-container {
+  background-color: #f2e3ce;
+  border-bottom: 1px solid #dbc5a3;
+}
+.nav-menu a:hover {
+  color: #a67c52;
+  border-bottom: 2px solid #c4986b;
+}
+
+/* PRODUCT SECTION */
+.product-single {
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+  justify-content: center;
+  margin: 60px auto;
+  max-width: 1200px;
+  padding: 0 20px;
+}
+
+.product-left img {
+  max-width: 100%;
+  width: 360px;
+  border-radius: 12px;
+  object-fit: contain;
+}
+
+.product-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.product-right h2 {
+  font-size: 24px;
+  font-weight: bold;
+  color: #3b2f2f;
+}
+
+.product-desc {
+  font-size: 15px;
+  color: #4b3c3c;
+  line-height: 1.6;
+}
+
+.product-weight {
+  font-weight: normal;
+  font-size: 16px;
+  color: #5c4a3d;
+  margin-left: 6px;
+}
+
+.nutrition-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.nutrition-list li {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  border-bottom: 1px solid #e6d6c8;
+}
+
+.nutrition-list .label {
+  font-weight: 600;
+  color: #3b2f2f;
+}
+
+.nutrition-list .label.sub {
+  font-weight: 400;
+  color: #7a6a5f;
+  margin-left: 12px;
+}
+
+.nutrition-list .value {
+  color: #4d3e36;
+  font-weight: 500;
+}
+.ingredient-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 14px;
+  color: #3b2f2f;
+  background-color: transparent;
+}
+
+.ingredient-list li {
+  border-bottom: 1px solid #e6d6c8;
+  padding: 8px 0;
+}
+
+.ingredient-list li:last-child {
+  border-bottom: none;
+}

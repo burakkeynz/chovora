@@ -1,0 +1,77 @@
+#favorites-section {
+  padding: 40px;
+  background-color: #fffaf3;
+  border-radius: 24px;
+  margin: 40px auto;
+  width: 90%;
+  max-width: 1200px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.favorites-title {
+  font-size: 28px;
+  text-align: center;
+  margin-bottom: 32px;
+  color: #5e4328;
+}
+
+.product-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 24px;
+}
+
+.product-card {
+  border: 1px solid #e0dcd2;
+  border-radius: 16px;
+  padding: 20px;
+  width: 260px;
+  text-align: center;
+  background-color: #fff;
+  transition: transform 0.3s;
+}
+
+.product-card:hover {
+  transform: scale(1.02);
+}
+
+.product-img {
+  width: 100%;
+  height: 200px;
+  object-fit: contain;
+  margin-bottom: 12px;
+}
+
+.product-info h3 {
+  font-size: 18px;
+  margin: 10px 0 6px;
+}
+
+.price {
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.detail-btn,
+.remove-btn {
+  background-color: #cbaf87;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.remove-btn {
+  background-color: #ae5a5a;
+  margin-left: 6px;
+}
+/* favourites.css'in sonuna ekle */
+.fade-out {
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}

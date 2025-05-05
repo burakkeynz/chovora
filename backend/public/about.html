@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/index.css" />
+    <link rel="stylesheet" href="/css/about.css" />
+  </head>
+  <body>
+    <!-- HEADER -->
+    <header>
+      <nav class="header-container">
+        <!-- Sol Logo -->
+        <div class="logo">
+          <a href="/index.html">
+            <img src="/images/brand_logo-removebg.png" alt="Chovora Logo" />
+          </a>
+        </div>
+
+        <div class="search-bar">
+          <input
+            id="search-input"
+            type="text"
+            placeholder="Ürün veya içerik ara..."
+            autocomplete="off"
+            autocorrect="off"
+            autocapitalize="off"
+          />
+          <button><img src="/images/search.png" alt="Ara" /></button>
+          <div id="suggestions" class="search-suggestions"></div>
+        </div>
+
+        <!-- Sağ Menü -->
+        <div class="nav-right">
+          <div class="nav-item" id="favorites-link">
+            <img src="/images/favourite.png" alt="Favorilerim" />
+            Favorilerim
+          </div>
+
+          <div class="nav-item" id="cart-link">
+            <img src="/images/shopping.png" alt="Sepetim" class="icon" />
+            Sepetim
+          </div>
+
+          <div class="nav-item" id="login-link">
+            <img src="/images/account.png" alt="User Icon" class="icon" />
+            Giriş Yap
+          </div>
+
+          <div class="nav-item" id="logout-link" style="display: none">
+            <img src="/images/logout.svg" alt="Logout Icon" class="icon" />
+            Çıkış Yap
+          </div>
+        </div>
+      </nav>
+    </header>
+    <!-- NAVBAR ÇİZGİ + MENÜ -->
+    <div class="main-navbar-wrapper">
+      <div class="top-line"></div>
+
+      <div class="main-navbar">
+        <div class="left-col"></div>
+
+        <!-- Ortadaki sütun -->
+        <div class="center-col">
+          <nav class="nav-menu">
+            <a href="/index.html">Ana Sayfa</a>
+            <a href="/products.html">Ürünlerimiz</a>
+            <a href="/about.html">Hakkımızda</a>
+            <a href="/contact.html">İletişim</a>
+          </nav>
+        </div>
+
+        <div class="right-col"></div>
+      </div>
+    </div>
+    <main class="about-grid">
+      <section class="about-title">
+        <h1>Hakkımızda</h1>
+      </section>
+      <!-- Üstteki 3 görsel kartı -->
+      <section class="about-top-images">
+        <div class="card">
+          <img src="/images/chovora-sport3.jpeg" alt="chovora bar" />
+        </div>
+        <div class="card">
+          <img src="/images/chovora-on-table.png" alt="chovora with coffee" />
+        </div>
+        <div class="card">
+          <img src="/images/chovora-diet.png" alt="chovora with ingredients" />
+        </div>
+      </section>
+
+      <!-- Alt metin bloğu kartı -->
+      <section class="about-text-card">
+        <div class="about-block">
+          <h2>Tatlıyla Barışmanın Zamanı Geldi</h2>
+          <p>
+            Bir sabah aynaya bakarken aklımızdan geçen şuydu: “Tatlıdan
+            vazgeçmeden de sağlıklı kalamaz mıyız?” Chovora, bu soruya evde
+            verilen dürüst bir cevapla başladı. Malzeme listesi basitti. Sonuç
+            şaşırtıcıydı. Hem tatmin edici, hem de hafifti. Dedik ki: Bu sadece
+            bizimle kalmamalı.
+          </p>
+        </div>
+        <div class="about-block">
+          <h2>Ne Zaman Lazımsa, Yanında</h2>
+          <p>
+            Spordan çıktın, enerjin düştü. Derse yetişmeye çalışıyorsun, öğün
+            arası bir şey lazım. Kahveni almışsın ama yanında küçük bir ödül
+            arıyorsun... Chovora, işte bu anlar için var. Dengeli içeriğiyle,
+            ihtiyaç duyduğun anda sana eşlik eder.
+          </p>
+        </div>
+        <div class="about-block">
+          <h2>Sade Olmak Cesaret İster</h2>
+          <p>
+            Biz, “fazla” olan her şeyi çıkarmayı seçtik. Rafine şekeri, katkıyı,
+            karmaşık tarifleri değil; sadeliği ve özü seçtik. Çünkü gerçek olan
+            şeylerin süslenmeye ihtiyacı yoktur. Chovora, az malzemeyle çok şey
+            anlatan bir bar. Gururla sade, samimiyetle net.
+          </p>
+        </div>
+      </section>
+    </main>
+    <section class="features">
+      <div class="feature-card">
+        <div class="icon-circle">
+          <img src="/images/sugar-free.png" alt="Şeker İlavesiz" />
+        </div>
+        <h4>Şeker İlavesiz</h4>
+        <p>Stevia ile tatlandırılmış, rafine şekersiz içerik.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="icon-circle">
+          <img src="/images/dark.png" alt="%78 Kakao" />
+        </div>
+        <h4>%78 Kakao</h4>
+        <p>Yoğun kakao tadı, rafine şekersiz keyif.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="icon-circle">
+          <img src="/images/oats.png" alt="Lif Kaynağı" />
+        </div>
+        <h4>Lif Kaynağı</h4>
+        <p>Doğal kaynaklı lif ile desteklenen içerik.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="icon-circle">
+          <img src="/images/vegan.svg" alt="Vegan" />
+        </div>
+        <h4>Vegan</h4>
+        <p>Hayvansal içerik bulundurmaz, tamamen bitkisel kaynaklıdır.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="icon-circle">
+          <img src="/images/free.png" alt="Kafeinsiz Kahve" />
+        </div>
+        <h4>Kafeinsiz Kahve</h4>
+        <p>Kahvenin tadı, kafeinin ağırlığı olmadan.</p>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="footer-bottom">
+        <p>© 2025 Chovora | Tüm Hakları Saklıdır.</p>
+      </div>
+    </footer>
+    <script src="js/config.js"></script>
+    <script src="/js/script.js"></script>
+  </body>
+</html>
