@@ -1,6 +1,6 @@
 const express = require("express");
 const verifyToken = require("../middleware/verifyToken");
-const Favourite = require("../models/favourite");
+const Favourite = require("../models/Favourite");
 
 const router = express.Router();
 
