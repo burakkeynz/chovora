@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sepetim | Chovora</title>
+    <link rel="stylesheet" href="/css/cart.css" />
+    <link rel="stylesheet" href="/css/index.css" />
+  </head>
+  <body>
+    <!-- HEADER -->
+    <header>
+      <nav class="header-container">
+        <div class="logo">
+          <a href="/index.html">
+            <img src="/images/brand_logo-removebg.png" alt="Chovora Logo" />
+          </a>
+        </div>
+
+        <div class="search-bar">
+          <input
+            id="search-input"
+            type="text"
+            placeholder="Ürün veya içerik ara..."
+            autocomplete="off"
+            autocorrect="off"
+            autocapitalize="off"
+          />
+          <button><img src="/images/search.png" alt="Ara" /></button>
+          <div id="suggestions" class="search-suggestions"></div>
+        </div>
+        <div class="nav-right">
+          <div class="nav-item" id="favorites-link">
+            <img src="/images/favourite.png" alt="Favorilerim" />
+            Favorilerim
+          </div>
+          <div class="nav-item" id="cart-link">
+            <img src="/images/shopping.png" alt="Sepetim" class="icon" />
+            Sepetim
+          </div>
+          <div class="nav-item" id="login-link">
+            <img src="/images/account.png" alt="User Icon" class="icon" />
+            Giriş Yap
+          </div>
+          <div class="nav-item" id="logout-link" style="display: none">
+            <img src="/images/logout.svg" alt="Logout Icon" class="icon" />
+            Çıkış Yap
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <div class="main-navbar-wrapper">
+      <div class="top-line"></div>
+      <div class="main-navbar">
+        <div class="left-col"></div>
+        <div class="center-col">
+          <nav class="nav-menu">
+            <a href="/index.html">Ana Sayfa</a>
+            <a href="/products.html">Ürünlerimiz</a>
+            <a href="/about.html">Hakkımızda</a>
+            <a href="/contact.html">İletişim</a>
+          </nav>
+        </div>
+        <div class="right-col"></div>
+      </div>
+    </div>
+
+    <main class="cart-section">
+      <div class="cart-container">
+        <h2><i class="fa-solid fa-cart-shopping"></i> Sepetim</h2>
+        <div id="cart-items">
+          <!-- Ürün kartları js ile eklenecek -->
+        </div>
+        <div id="cart-summary" style="display: none">
+          <p><strong>Toplam:</strong> <span id="total-price">₺0</span></p>
+          <button type="button" id="checkout-btn" disabled class="disabled-btn">
+            Satın Alma İşlemlerimiz Sonradan Açılacaktır
+          </button>
+          <p class="checkout-info">
+            Chovora ürünlerinin online satışı ileri tarihte başlayacaktır!
+            Takipte kalın 🍫
+          </p>
+        </div>
+        <div id="empty-cart" style="display: none">
+          <img
+            src="/images/empty-cart.png"
+            alt="Sepet Boş"
+            class="empty-image"
+          />
+        </div>
+        <div id="login-warning" style="display: none">
+          <p>Sepeti görüntülemek için lütfen giriş yapınız.</p>
+        </div>
+      </div>
+    </main>
+
+    <section class="features">
+      <div class="feature-card">
+        <div class="icon-circle">
+          <img src="/images/sugar-free.png" alt="Şeker İlavesiz" />
+        </div>
+        <h4>Şeker İlavesiz</h4>
+        <p>Stevia ile tatlandırılmış, rafine şekersiz içerik.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon-circle">
+          <img src="/images/dark.png" alt="%78 Kakao" />
+        </div>
+        <h4>%78 Kakao</h4>
+        <p>Yoğun kakao tadı, rafine şekersiz keyif.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon-circle">
+          <img src="/images/oats.png" alt="Lif Kaynağı" />
+        </div>
+        <h4>Lif Kaynağı</h4>
+        <p>Doğal kaynaklı lif ile desteklenen içerik.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon-circle">
+          <img src="/images/vegan.svg" alt="Vegan" />
+        </div>
+        <h4>Vegan</h4>
+        <p>Hayvansal içerik bulundurmaz, tamamen bitkisel kaynaklıdır.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon-circle">
+          <img src="/images/free.png" alt="Kafeinsiz Kahve" />
+        </div>
+        <h4>Kafeinsiz Kahve</h4>
+        <p>Kahvenin tadı, kafeinin ağırlığı olmadan.</p>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="footer-bottom">
+        <p>© 2025 Chovora | Tüm Hakları Saklıdır.</p>
+      </div>
+    </footer>
+
+    <script src="/js/cart.js"></script>
+    <script src="/js/script.js"></script>
+  </body>
+</html>
