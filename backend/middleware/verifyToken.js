@@ -2,7 +2,6 @@ require("dotenv").config();
 const jwt = require("jsonwebtoken");
 
 const JWT_SECRET = process.env.JWT_SECRET || "chovora_secret_key";
-console.log("🔐 JWT_SECRET:", JWT_SECRET);
 
 const verifyToken = (req, res, next) => {
   const token = req.cookies.token;
