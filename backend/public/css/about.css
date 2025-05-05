@@ -1,0 +1,79 @@
+.about-title {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.about-title h1 {
+  font-size: 3rem;
+  color: #2c2c2c;
+  font-weight: 700;
+}
+
+/* Genel Grid yapısı */
+.about-grid {
+  display: grid;
+  grid-template-rows: auto auto;
+  gap: 3rem;
+  padding: 4rem 2rem;
+  background-color: #fdfdf9;
+  font-family: "Helvetica Neue", sans-serif;
+}
+
+/* Üstteki 3 görseli kapsayan kart satırı */
+.about-top-images {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+}
+
+/* Her görsel bir kart içinde */
+.card {
+  background-color: #f9f7f3; /* daha soluk ve nötr bej */
+  border-radius: 12px;
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.08); /* biraz daha yayılmış gölge */
+  padding: 0;
+  width: 30%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 350px; /* tüm kartlar eşit yükseklikte */
+}
+
+.card img {
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: contain; /* oran koruyarak sığdır */
+}
+
+/* Metin bloğunu kapsayan kart alanı */
+.about-text-card {
+  background-color: #f6f3ee;
+  border-radius: 16px;
+  padding: 3rem 2rem;
+  width: 100%; /* sağ ve sola tam otursun */
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.5rem;
+  text-align: center;
+}
+
+/* Her metin bloğu */
+.about-block {
+  max-width: 700px;
+}
+
+.about-block h2 {
+  font-size: 1.6rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #2a2a2a;
+}
+
+.about-block p {
+  font-size: 1rem;
+  color: #4a4a4a;
+  line-height: 1.7;
+}

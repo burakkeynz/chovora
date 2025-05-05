@@ -1,0 +1,101 @@
+.thanks-card-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 20px;
+  background-color: #f6f3ee;
+}
+
+.thanks-card {
+  max-width: 950px;
+  width: 100%;
+  background-color: #fbf7f2; /* 🔄 Buraya ekle */
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.04);
+  padding: 40px;
+  text-align: center;
+  animation: fadeIn 0.8s ease;
+}
+
+.thanks-card img {
+  max-width: 70%;
+  border-radius: 12px;
+  margin-bottom: 30px;
+}
+
+.thanks-card h2 {
+  font-size: 26px;
+  margin-bottom: 15px;
+  color: #4a3c31;
+}
+
+.thanks-card p {
+  font-size: 17px;
+  color: #5a4b41;
+  margin-bottom: 20px;
+  line-height: 1.6;
+  max-width: 650px;
+  margin-inline: auto;
+}
+
+.thanks-card a {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 12px 24px;
+  background-color: #c99d66;
+  color: white;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.thanks-card a:hover {
+  background-color: #b2824f;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+#toast-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999;
+}
+
+.toast {
+  background-color: #d7b58d;
+  color: #fff;
+  padding: 12px 20px;
+  margin-top: 10px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  font-weight: bold;
+  animation: fadeInOut 2.5s ease-in-out;
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  10% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
