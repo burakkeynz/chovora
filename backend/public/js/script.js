@@ -1,5 +1,4 @@
-import { baseURL } from "./config.js"; // config.js'den baseURi alıyoruz
-
+const baseURL = window.baseURL;
 document.addEventListener("DOMContentLoaded", () => {
   (async () => {
     try {
