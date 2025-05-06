@@ -20,18 +20,13 @@ function toggleLoginUI() {
   const loginLink = document.getElementById("login-link");
   const logoutLink = document.getElementById("logout-link");
 
-  // Her iki butonu da önce görünürlükten sıfırla
-  loginLink?.classList.remove("visible");
-  logoutLink?.classList.remove("visible");
-
-  // Sayfa yüklendikten sonra görünürlük ver
-  setTimeout(() => {
-    if (isUserLoggedIn) {
-      logoutLink?.classList.add("visible");
-    } else {
-      loginLink?.classList.add("visible");
-    }
-  }, 100); // kısa gecikme ile DOM'un yerleşmesini bekle
+  if (isUserLoggedIn) {
+    loginLink.style.display = "none";
+    logoutLink.style.display = "flex"; // flex çünkü .nav-item class'ı altında
+  } else {
+    logoutLink.style.display = "none";
+    loginLink.style.display = "flex";
+  }
 }
 
 // Toast mesaj fonksiyonu
