@@ -1,12 +1,10 @@
 import { baseURL } from "./config.js";
+import { showToast } from "./script.js";
 
 let isUserLoggedIn = false;
 
-// Kullanıcı giriş yapmış mı ve UI'yi güncelle
-async function updateLoginUI() {
-  const loginLink = document.getElementById("login-link");
-  const logoutLink = document.getElementById("logout-link");
-
+// Sadece login durumunu kontrol eder
+async function checkAuth() {
   try {
     const res = await fetch(`${baseURL}/api/auth/check-auth`, {
       credentials: "include",
@@ -16,6 +14,12 @@ async function updateLoginUI() {
     console.warn("check-auth error:", err);
     isUserLoggedIn = false;
   }
+}
+
+// Login ve logout butonlarını göster/gizle
+export function updateLoginUI() {
+  const loginLink = document.getElementById("login-link");
+  const logoutLink = document.getElementById("logout-link");
 
   if (isUserLoggedIn) {
     loginLink.style.display = "none";
@@ -24,20 +28,6 @@ async function updateLoginUI() {
     logoutLink.style.display = "none";
     loginLink.style.display = "flex";
   }
-}
-
-// Toast mesaj fonksiyonu
-export function showToast(message) {
-  const container = document.getElementById("toast-container");
-  if (!container) return;
-  const toast = document.createElement("div");
-  toast.className = "toast";
-  toast.textContent = message;
-  const index = container.querySelectorAll(".toast").length;
-  toast.style.top = `${index * 60}px`;
-  container.appendChild(toast);
-  setTimeout(() => toast.classList.add("hide"), 3000);
-  setTimeout(() => toast.remove(), 3500);
 }
 
 // Favorilere ekleme işlemi
@@ -67,7 +57,8 @@ function addToFavorites(productId) {
 window.addToFavorites = addToFavorites;
 
 document.addEventListener("DOMContentLoaded", async () => {
-  await updateLoginUI();
+  await checkAuth();
+  updateLoginUI();
 
   document
     .getElementById("logout-link")

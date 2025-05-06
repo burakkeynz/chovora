@@ -1,35 +1,20 @@
 import { baseURL } from "./config.js";
-import { showToast } from "./script.js"; // toast'ı dışarıdan alıyoruz
-import { updateLoginUI } from "./script.js"; // yeni eklenen fonksiyon
+import { showToast } from "./script.js";
+import { updateLoginUI } from "./script.js";
 
 let isUserLoggedIn = false;
 
-// Login ve logout butonlarını göster/gizle
-function toggleLoginUI() {
-  const loginLink = document.getElementById("login-link");
-  const logoutLink = document.getElementById("logout-link");
-
-  if (isUserLoggedIn) {
-    loginLink.style.display = "none";
-    logoutLink.style.display = "flex"; // flex çünkü .nav-item class'ı altında
-  } else {
-    logoutLink.style.display = "none";
-    loginLink.style.display = "flex";
+// Sadece login durumunu kontrol eder
+async function checkAuth() {
+  try {
+    const res = await fetch(`${baseURL}/api/auth/check-auth`, {
+      credentials: "include",
+    });
+    isUserLoggedIn = res.ok;
+  } catch (err) {
+    console.warn("check-auth error:", err);
+    isUserLoggedIn = false;
   }
-}
-
-// Toast mesaj fonksiyonu
-export function showToast(message) {
-  const container = document.getElementById("toast-container");
-  if (!container) return;
-  const toast = document.createElement("div");
-  toast.className = "toast";
-  toast.textContent = message;
-  const index = container.querySelectorAll(".toast").length;
-  toast.style.top = `${index * 60}px`;
-  container.appendChild(toast);
-  setTimeout(() => toast.classList.add("hide"), 3000);
-  setTimeout(() => toast.remove(), 3500);
 }
 
 // Favorilere ekleme işlemi
@@ -59,9 +44,9 @@ function addToFavorites(productId) {
 window.addToFavorites = addToFavorites;
 
 document.addEventListener("DOMContentLoaded", async () => {
+  await checkAuth();
   await updateLoginUI();
 
-  // Logout
   document
     .getElementById("logout-link")
     ?.addEventListener("click", async (e) => {
@@ -73,7 +58,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       window.location.href = "logout.html";
     });
 
-  // Ürün kartlarına tıklama
   document.querySelectorAll(".product-card").forEach((card) => {
     card.addEventListener("click", function (e) {
       if (e.target.closest(".buy-btn") || e.target.closest(".fav-btn")) return;
@@ -83,7 +67,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   });
 
-  // Sepete Ekle
   document.querySelectorAll(".buy-btn").forEach((btn) => {
     btn.addEventListener("click", () => {
       const card = btn.closest(".product-card");
@@ -120,7 +103,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   });
 
-  // Favori butonları
   document.querySelectorAll(".fav-btn").forEach((btn) => {
     btn.addEventListener("click", function () {
       const productId = this.closest(".product-card").getAttribute("data-id");
@@ -128,7 +110,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   });
 
-  // Sepet sayfasına yönlendirme
   document.getElementById("cart-link")?.addEventListener("click", () => {
     const localCart = JSON.parse(localStorage.getItem("cart")) || [];
     if (isUserLoggedIn || localCart.length > 0) {
@@ -141,7 +122,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 
-  // Favoriler sayfasına yönlendirme
   document.getElementById("favorites-link")?.addEventListener("click", () => {
     if (isUserLoggedIn) {
       window.location.href = "favourites.html";
@@ -153,12 +133,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 
-  // Giriş yap sayfasına yönlendirme
   document.getElementById("login-link")?.addEventListener("click", () => {
     window.location.href = "login.html";
   });
 
-  // Arama kutusu ve öneriler
   const searchInput = document.getElementById("search-input");
   const suggestionsBox = document.getElementById("suggestions");
   const products = [
