@@ -55,7 +55,6 @@ function renderCartItems(items) {
     container.innerHTML = `
       <div class="empty-cart">
         <img src="images/empty-cart.png" alt="Boş Sepet" class="empty-image" />
-        <p>Sepetinizde ürün bulunmamaktadır 🧺</p>
       </div>`;
     return;
   }
