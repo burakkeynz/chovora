@@ -9,8 +9,8 @@ const cookieParser = require("cookie-parser");
 
 const connectDB = require("./db");
 const authRoutes = require("./routes/auth");
-const cartRoutes = require("./routes/cart");
 const favouriteRoutes = require("./routes/favourites");
+const cartRoutes = require("./routes/cart");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
