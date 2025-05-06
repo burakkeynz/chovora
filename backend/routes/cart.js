@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Cart = require("../models/Cart");
 
-// Quantity güncelleme endpoint'i
+// Quantity güncelleme
 router.put("/cart/update-quantity", async (req, res) => {
   const { productId, change } = req.body;
   const userId = req.cookies?.userId;
