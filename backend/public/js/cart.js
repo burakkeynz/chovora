@@ -1,4 +1,3 @@
-// ==== FRONTEND - public/js/cart.js ====
 import { baseURL } from "./config.js";
 import {
   showToast,
@@ -7,15 +6,14 @@ import {
   setLoginState,
 } from "./script.js";
 
-// Giriş durumu kontrolü
+// Giriş kontrolü
 async function checkAuth() {
   try {
     const res = await fetch(`${baseURL}/api/auth/check-auth`, {
       credentials: "include",
     });
     setLoginState(res.ok);
-  } catch (err) {
-    console.warn("check-auth error:", err);
+  } catch {
     setLoginState(false);
   }
 }
@@ -36,17 +34,38 @@ function addToFavorites(productId) {
     body: JSON.stringify({ productId }),
   })
     .then((res) => {
-      if (!res.ok) throw new Error("Favori eklenemedi");
+      if (!res.ok) throw new Error();
       showToast("Ürün favorilere eklendi 💛");
     })
-    .catch(() => {
-      showToast("Favori eklenemedi.");
-    });
+    .catch(() => showToast("Favori eklenemedi."));
 }
 
 window.addToFavorites = addToFavorites;
 
-// Sepet ürünlerini render eder
+function attachQuantityListeners() {
+  if (!getLoginState()) return;
+
+  document.querySelectorAll(".qty-btn").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      const isIncrease = btn.classList.contains("increase");
+      const itemEl = btn.closest(".cart-item");
+      const productId = itemEl.querySelector(".delete-btn").dataset.id;
+
+      await fetch(`${baseURL}/api/cart/update-quantity`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({
+          productId,
+          change: isIncrease ? 1 : -1,
+        }),
+      });
+
+      location.reload();
+    });
+  });
+}
+
 function renderCartItems(items) {
   const container = document.getElementById("cart-items");
   container.innerHTML = "";
@@ -101,10 +120,11 @@ function renderCartItems(items) {
       }
     });
   });
+
+  attachQuantityListeners();
 }
 
-// Sayfa yüklenince çalışır
-
+// Sayfa yüklendiğinde
 document.addEventListener("DOMContentLoaded", async () => {
   await checkAuth();
   updateLoginUI();
