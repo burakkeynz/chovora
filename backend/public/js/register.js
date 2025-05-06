@@ -65,3 +65,4 @@ function togglePassword(inputId, toggleIcon) {
   img.src = isHidden ? "/images/visibility-off.svg" : "/images/visibility.svg";
   img.alt = isHidden ? "Gizle" : "Göster";
 }
+window.togglePassword = togglePassword;

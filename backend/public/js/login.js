@@ -93,7 +93,7 @@ async function syncLocalCartToBackend() {
   localStorage.removeItem("cart");
 }
 
-function togglePassword(inputId, toggleIcon) {
+export function togglePassword(inputId, toggleIcon) {
   const input = document.getElementById(inputId);
   const img = toggleIcon.querySelector("img");
   const isHidden = input.type === "password";
@@ -102,3 +102,5 @@ function togglePassword(inputId, toggleIcon) {
   img.src = isHidden ? "/images/visibility-off.svg" : "/images/visibility.svg";
   img.alt = isHidden ? "Gizle" : "Göster";
 }
+
+window.togglePassword = togglePassword;
