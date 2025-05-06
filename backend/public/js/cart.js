@@ -1,8 +1,7 @@
 import { baseURL } from "./config.js";
 import { showToast } from "./script.js";
 import { updateLoginUI } from "./script.js";
-
-let isUserLoggedIn = false;
+import { isUserLoggedIn } from "./script.js";
 
 // Sadece login durumunu kontrol eder
 async function checkAuth() {
