@@ -6,7 +6,7 @@ const User = require("../models/User");
 const router = express.Router();
 const JWT_SECRET = process.env.JWT_SECRET || "chovora_secret_key";
 
-// (Register)
+// Kayıt
 router.post("/register", async (req, res) => {
   const { name, email, password } = req.body;
 
@@ -31,7 +31,7 @@ router.post("/register", async (req, res) => {
   }
 });
 
-// (Login)
+// Giriş
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
@@ -46,6 +46,15 @@ router.post("/login", async (req, res) => {
       expiresIn: "7d",
     });
 
+    // 🟢 JWT Token Cookie'si
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "None",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+
+    // 🟢 userId Cookie'si (backend'in ihtiyacı için)
     res.cookie("userId", user._id.toString(), {
       httpOnly: true,
       secure: true,
@@ -63,6 +72,7 @@ router.post("/login", async (req, res) => {
   }
 });
 
+// Giriş kontrolü
 router.get("/check-auth", (req, res) => {
   const token = req.cookies.token;
 
@@ -78,10 +88,19 @@ router.get("/check-auth", (req, res) => {
   }
 });
 
-//(Logout)
+// Çıkış
 router.get("/logout", (req, res) => {
-  res.clearCookie("token");
-  res.clearCookie("userId");
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: true,
+    sameSite: "None",
+  });
+  res.clearCookie("userId", {
+    httpOnly: true,
+    secure: true,
+    sameSite: "None",
+  });
+
   res.status(200).json({ message: "Çıkış yapıldı." });
 });
 
