@@ -1,11 +1,3 @@
-import { baseURL } from "./config.js";
-import {
-  showToast,
-  updateLoginUI,
-  getLoginState,
-  setLoginState,
-} from "./script.js";
-
 const authMiddleware = require("../middleware/authMiddleware");
 const express = require("express");
 const router = express.Router();
