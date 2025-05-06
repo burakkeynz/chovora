@@ -21,11 +21,11 @@ function toggleLoginUI() {
   const logoutLink = document.getElementById("logout-link");
 
   if (isUserLoggedIn) {
-    loginLink.style.display = "none";
-    logoutLink.style.display = "inline-block";
+    loginLink?.classList.remove("visible");
+    logoutLink?.classList.add("visible");
   } else {
-    loginLink.style.display = "inline-block";
-    logoutLink.style.display = "none";
+    logoutLink?.classList.remove("visible");
+    loginLink?.classList.add("visible");
   }
 }
 
