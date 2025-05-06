@@ -6,19 +6,35 @@ import {
   setLoginState,
 } from "./script.js";
 
-// Giriş kontrolü
 async function checkAuth() {
   try {
     const res = await fetch(`${baseURL}/api/auth/check-auth`, {
       credentials: "include",
     });
     setLoginState(res.ok);
-  } catch {
+  } catch (err) {
     setLoginState(false);
   }
 }
 
-// Favorilere ekleme
+// LocalStorage'dan ürünleri backend'e taşır (login sonrası)
+async function mergeCartWithBackend() {
+  const localCart = JSON.parse(localStorage.getItem("cart")) || [];
+  if (localCart.length === 0) return;
+
+  for (const item of localCart) {
+    await fetch(`${baseURL}/api/cart`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({ product: item }),
+    });
+  }
+
+  localStorage.removeItem("cart");
+}
+
+// Favori butonu
 function addToFavorites(productId) {
   if (!productId) return;
 
@@ -39,9 +55,9 @@ function addToFavorites(productId) {
     })
     .catch(() => showToast("Favori eklenemedi."));
 }
-
 window.addToFavorites = addToFavorites;
 
+// + / - butonları
 function attachQuantityListeners() {
   if (!getLoginState()) return;
 
@@ -66,6 +82,7 @@ function attachQuantityListeners() {
   });
 }
 
+// Sepet ürünlerini render eder
 function renderCartItems(items) {
   const container = document.getElementById("cart-items");
   container.innerHTML = "";
@@ -74,6 +91,7 @@ function renderCartItems(items) {
     container.innerHTML = `
       <div class="empty-cart">
         <img src="images/empty-cart.png" alt="Boş Sepet" class="empty-image" />
+        <p>Sepetinizde ürün bulunmamaktadır 🧺</p>
       </div>`;
     return;
   }
@@ -124,12 +142,13 @@ function renderCartItems(items) {
   attachQuantityListeners();
 }
 
-// Sayfa yüklendiğinde
+// Sayfa yüklenince çalışır
 document.addEventListener("DOMContentLoaded", async () => {
   await checkAuth();
   updateLoginUI();
 
   if (getLoginState()) {
+    await mergeCartWithBackend();
     fetch(`${baseURL}/api/cart`, {
       credentials: "include",
     })
