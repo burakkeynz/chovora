@@ -9,11 +9,11 @@ document.addEventListener("DOMContentLoaded", () => {
     method: "GET",
     credentials: "include",
   })
-    .then((res) => {
-      if (!res.ok) throw new Error("Giriş gerekli");
-      return res.json();
-    })
-    .then(({ favorites }) => {
+    .then(async (res) => {
+      if (!res.ok) throw new Error("Unauthorized");
+      const data = await res.json();
+
+      const { favorites } = data;
       if (!favorites || favorites.length === 0) {
         container.innerHTML = `<p style="text-align:center">Henüz favori ürününüz yok.</p>`;
         return;
@@ -50,15 +50,23 @@ document.addEventListener("DOMContentLoaded", () => {
             <button class="detail-btn" onclick="window.location.href='${
               p.link
             }'">Ürün Bilgileri</button>
-            <button class="remove-btn" onclick="removeFromFavorites('${id}')">Favorilerden Çıkar</button>
+            <button class="remove-btn" data-id="${id}">Favorilerden Çıkar</button>
           </div>
         `;
 
         container.appendChild(card);
       });
+
+      // Remove butonlarını tanımla
+      document.querySelectorAll(".remove-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const productId = btn.getAttribute("data-id");
+          removeFromFavorites(productId);
+        });
+      });
     })
     .catch(() => {
-      container.innerHTML = `<p style="text-align:center">Lütfen giriş yapın.</p>`;
+      container.innerHTML = `<p style="text-align:center">Favorilerinizi görmek için giriş yapmalısınız.</p>`;
     });
 });
 
@@ -69,14 +77,13 @@ function removeFromFavorites(productId) {
   })
     .then((res) => {
       if (!res.ok) throw new Error("Silinemedi");
-      // 🧼 DOM'dan kartı kaldır
+
+      // DOM'dan kartı kaldır
       const cardToRemove = document.querySelector(`[data-id="${productId}"]`);
       if (cardToRemove) {
         cardToRemove.remove();
-        setTimeout(() => cardToRemove.remove(), 300);
+        showToast("Ürün favorilerden çıkarıldı ❌");
       }
-
-      showToast("Ürün favorilerden çıkarıldı ❌");
 
       const container = document.getElementById("favorites-container");
       if (container && container.children.length === 0) {
@@ -87,4 +94,3 @@ function removeFromFavorites(productId) {
       showToast("Silme işlemi başarısız.");
     });
 }
-window.removeFromFavorites = removeFromFavorites;
