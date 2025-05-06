@@ -220,11 +220,6 @@ main {
   text-decoration: underline;
 }
 
-#login-link.visible,
-#logout-link.visible {
-  display: inline-block; /* sadece ilgili butonu göster */
-}
-
 .password-wrapper.second-password {
   margin-bottom: 0px; /* Veya 4px gibi daha küçük bir değer */
 }
