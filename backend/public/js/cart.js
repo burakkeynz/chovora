@@ -1,7 +1,6 @@
 import { baseURL } from "./config.js";
 import { showToast } from "./script.js";
 import { updateLoginUI } from "./script.js";
-import { isUserLoggedIn } from "./script.js";
 import { getLoginState, setLoginState } from "./script.js";
 
 // Sadece login durumunu kontrol eder
