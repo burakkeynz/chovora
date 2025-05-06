@@ -238,6 +238,10 @@ main {
   opacity: 1;
 }
 
+.password-wrapper {
+  position: relative;
+}
+
 .password-wrapper.second-password {
   margin-bottom: 0px; /* Veya 4px gibi daha küçük bir değer */
 }
@@ -250,10 +254,12 @@ main {
 }
 .toggle-password {
   position: absolute;
-  top: 42%;
+  top: 50%;
+  right: 12px;
   transform: translateY(-50%);
   cursor: pointer;
 }
+
 .toggle-password img.eye-icon {
   width: 20px;
   height: 20px;
