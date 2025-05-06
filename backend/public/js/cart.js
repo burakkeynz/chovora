@@ -64,13 +64,14 @@ function attachQuantityListeners() {
   document.querySelectorAll(".qty-btn").forEach((btn) => {
     btn.addEventListener("click", async function (e) {
       e.preventDefault();
-      e.stopPropagation(); // ekstra güvenlik
+      e.stopPropagation();
 
       const isIncrease = this.classList.contains("increase");
       const itemEl = this.closest(".cart-item");
+      const qtySpan = itemEl.querySelector(".product-qty");
       const productId = itemEl.querySelector(".delete-btn").dataset.id;
 
-      await fetch(`${baseURL}/api/cart/update-quantity`, {
+      const res = await fetch(`${baseURL}/api/cart/update-quantity`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -80,7 +81,33 @@ function attachQuantityListeners() {
         }),
       });
 
-      location.reload();
+      if (res.ok) {
+        let currentQty = parseInt(qtySpan.textContent);
+        currentQty += isIncrease ? 1 : -1;
+
+        if (currentQty <= 0) {
+          itemEl.remove(); // ürün 0 olduysa sepetten kaldır
+        } else {
+          qtySpan.textContent = currentQty;
+        }
+
+        // 🟢 Toplam fiyatı yeniden hesapla
+        const totalPriceEl = document.getElementById("total-price");
+        let total = 0;
+        document.querySelectorAll(".cart-item").forEach((item) => {
+          const qty = parseInt(
+            item.querySelector(".product-qty")?.textContent || 0
+          );
+          const price = parseFloat(
+            item.querySelector(".cart-item-price")?.textContent.replace("₺", "")
+          );
+          total += qty * price;
+        });
+
+        if (totalPriceEl) totalPriceEl.textContent = `₺${total.toFixed(2)}`;
+      } else {
+        showToast("Quantity güncellenemedi");
+      }
     });
   });
 }
