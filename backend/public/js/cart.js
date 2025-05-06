@@ -63,6 +63,7 @@ function attachQuantityListeners() {
 
   document.querySelectorAll(".qty-btn").forEach((btn) => {
     btn.addEventListener("click", async () => {
+      e.preventDefault();
       const isIncrease = btn.classList.contains("increase");
       const itemEl = btn.closest(".cart-item");
       const productId = itemEl.querySelector(".delete-btn").dataset.id;
