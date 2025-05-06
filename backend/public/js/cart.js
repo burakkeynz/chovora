@@ -62,10 +62,12 @@ function attachQuantityListeners() {
   if (!getLoginState()) return;
 
   document.querySelectorAll(".qty-btn").forEach((btn) => {
-    btn.addEventListener("click", async (e) => {
-      e.preventDefault(); // ✅ artık tanımlı
-      const isIncrease = btn.classList.contains("increase");
-      const itemEl = btn.closest(".cart-item");
+    btn.addEventListener("click", async function (e) {
+      e.preventDefault();
+      e.stopPropagation(); // ekstra güvenlik
+
+      const isIncrease = this.classList.contains("increase");
+      const itemEl = this.closest(".cart-item");
       const productId = itemEl.querySelector(".delete-btn").dataset.id;
 
       await fetch(`${baseURL}/api/cart/update-quantity`, {
