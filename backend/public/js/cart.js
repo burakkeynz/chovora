@@ -114,9 +114,9 @@ function renderCartItems(items) {
         <div class="cart-item-bottom">
           <span>Miktar:</span>
           <div class="quantity-controls">
-            <button class="qty-btn decrease">−</button>
+            <button class="qty-btn decrease" type="button">−</button>
             <span class="product-qty">${item.quantity}</span>
-            <button class="qty-btn increase">+</button>
+            <button class="qty-btn increase" type="button">+</button>
           </div>
         </div>
       </div>`;
