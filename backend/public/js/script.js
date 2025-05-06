@@ -47,6 +47,7 @@ function addToFavorites(productId) {
 
   if (!isUserLoggedIn) {
     showToast("Favori eklemek için giriş yapmalısınız.");
+    localStorage.removeItem("loginReason"); // 🔁 Y1: yönlendirme verisini temizle
     localStorage.setItem("redirectAfterLogin", window.location.pathname);
     localStorage.setItem("loginReason", "favoritesAccess");
     window.location.href = "login.html";
@@ -141,8 +142,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (isUserLoggedIn || localCart.length > 0) {
       window.location.href = "cart.html";
     } else {
-      localStorage.setItem("loginReason", "cartAccess");
+      localStorage.removeItem("loginReason"); // 🔁 Y2: önceki yönlendirme verisini temizle
       localStorage.setItem("redirectAfterLogin", "cart.html");
+      localStorage.setItem("loginReason", "cartAccess");
       window.location.href = "login.html";
     }
   });
@@ -151,8 +153,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (isUserLoggedIn) {
       window.location.href = "favourites.html";
     } else {
-      localStorage.setItem("loginReason", "favoritesAccess");
+      localStorage.removeItem("loginReason"); // 🔁 Y2: önceki yönlendirme verisini temizle
       localStorage.setItem("redirectAfterLogin", "favourites.html");
+      localStorage.setItem("loginReason", "favoritesAccess");
       window.location.href = "login.html";
     }
   });
