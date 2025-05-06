@@ -35,14 +35,6 @@ function showElementSmoothly(idToShow, idToHide) {
   }
 }
 
-export function updateLoginUI() {
-  if (getLoginState()) {
-    showElementSmoothly("logout-link", "login-link");
-  } else {
-    showElementSmoothly("login-link", "logout-link");
-  }
-}
-
 async function mergeCartWithBackend() {
   const localCart = JSON.parse(localStorage.getItem("cart")) || [];
   if (localCart.length === 0) return;
