@@ -7,6 +7,10 @@ import {
   checkAuth,
 } from "./script.js"; // checkAuth fonksiyonu da script.js'ten import edilmeli
 
+function getTokenFromStorage() {
+  return localStorage.getItem("token");
+}
+
 async function mergeCartWithBackend() {
   const localCart = JSON.parse(localStorage.getItem("cart")) || [];
   if (localCart.length === 0) return;
@@ -14,7 +18,10 @@ async function mergeCartWithBackend() {
   for (const item of localCart) {
     await fetch(`${baseURL}/api/cart`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getTokenFromStorage()}`,
+      },
       credentials: "include",
       body: JSON.stringify({ product: item }),
     });
@@ -54,7 +61,10 @@ function attachQuantityListeners() {
 
       const res = await fetch(`${baseURL}/api/cart/update-quantity`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getTokenFromStorage()}`,
+        },
         credentials: "include",
         body: JSON.stringify({
           productId,
@@ -135,6 +145,10 @@ function renderCartItems(items) {
       const id = btn.getAttribute("data-id");
       try {
         await fetch(`${baseURL}/api/cart/${id}`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${getTokenFromStorage()}`,
+          },
           method: "DELETE",
           credentials: "include",
         });
@@ -173,9 +187,16 @@ document.addEventListener("DOMContentLoaded", async () => {
   await mergeCartWithBackend();
 
   fetch(`${baseURL}/api/cart`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getTokenFromStorage()}`,
+    },
     credentials: "include",
   })
     .then((res) => res.json())
-    .then((data) => renderCartItems(data.cart))
+    .then((data) => {
+      console.log("Sepet verisi geldi:", data); // ✅ Artık doğru
+      renderCartItems(data.cart);
+    })
     .catch(() => showToast("Sepet yüklenemedi"));
 });

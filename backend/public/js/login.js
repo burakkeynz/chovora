@@ -46,6 +46,12 @@ document.addEventListener("DOMContentLoaded", () => {
       const data = await res.json();
 
       if (res.ok) {
+        // ✅ Token varsa localStorage'a kaydet
+        if (data.token) {
+          localStorage.setItem("token", data.token);
+          setLoginState(true);
+        }
+
         await syncLocalCartToBackend();
 
         const redirect = localStorage.getItem("redirectAfterLogin");
