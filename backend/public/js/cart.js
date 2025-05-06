@@ -17,7 +17,6 @@ async function checkAuth() {
   }
 }
 
-// LocalStorage'dan ürünleri backend'e taşır (login sonrası)
 async function mergeCartWithBackend() {
   const localCart = JSON.parse(localStorage.getItem("cart")) || [];
   if (localCart.length === 0) return;
@@ -34,7 +33,6 @@ async function mergeCartWithBackend() {
   localStorage.removeItem("cart");
 }
 
-// Favori butonu
 function addToFavorites(productId) {
   if (!productId) return;
 
@@ -57,7 +55,21 @@ function addToFavorites(productId) {
 }
 window.addToFavorites = addToFavorites;
 
-// + / - butonları
+function recalculateTotalPrice() {
+  const totalPriceEl = document.getElementById("total-price");
+  let total = 0;
+
+  document.querySelectorAll(".cart-item").forEach((item) => {
+    const qty = parseInt(item.querySelector(".product-qty")?.textContent || 0);
+    const price = parseFloat(
+      item.querySelector(".cart-item-price")?.textContent.replace("₺", "")
+    );
+    total += qty * price;
+  });
+
+  if (totalPriceEl) totalPriceEl.textContent = `₺${total.toFixed(2)}`;
+}
+
 function attachQuantityListeners() {
   if (!getLoginState()) return;
 
@@ -86,25 +98,16 @@ function attachQuantityListeners() {
         currentQty += isIncrease ? 1 : -1;
 
         if (currentQty <= 0) {
-          itemEl.remove(); // ürün 0 olduysa sepetten kaldır
+          itemEl.remove();
+          if (document.querySelectorAll(".cart-item").length === 0) {
+            document.getElementById("empty-cart").style.display = "block";
+            document.getElementById("cart-summary").style.display = "none";
+          }
         } else {
           qtySpan.textContent = currentQty;
         }
 
-        // 🟢 Toplam fiyatı yeniden hesapla
-        const totalPriceEl = document.getElementById("total-price");
-        let total = 0;
-        document.querySelectorAll(".cart-item").forEach((item) => {
-          const qty = parseInt(
-            item.querySelector(".product-qty")?.textContent || 0
-          );
-          const price = parseFloat(
-            item.querySelector(".cart-item-price")?.textContent.replace("₺", "")
-          );
-          total += qty * price;
-        });
-
-        if (totalPriceEl) totalPriceEl.textContent = `₺${total.toFixed(2)}`;
+        recalculateTotalPrice();
       } else {
         showToast("Quantity güncellenemedi");
       }
@@ -112,7 +115,6 @@ function attachQuantityListeners() {
   });
 }
 
-// Sepet ürünlerini render eder
 function renderCartItems(items) {
   const container = document.getElementById("cart-items");
   container.innerHTML = "";
@@ -162,7 +164,15 @@ function renderCartItems(items) {
           credentials: "include",
         });
         showToast("Ürün sepetten kaldırıldı ❌");
-        location.reload();
+
+        btn.closest(".cart-item").remove();
+
+        if (document.querySelectorAll(".cart-item").length === 0) {
+          document.getElementById("empty-cart").style.display = "block";
+          document.getElementById("cart-summary").style.display = "none";
+        }
+
+        recalculateTotalPrice();
       } catch {
         showToast("Silme işlemi başarısız oldu.");
       }
@@ -170,9 +180,9 @@ function renderCartItems(items) {
   });
 
   attachQuantityListeners();
+  recalculateTotalPrice();
 }
 
-// Sayfa yüklenince çalışır
 document.addEventListener("DOMContentLoaded", async () => {
   await checkAuth();
   updateLoginUI();
