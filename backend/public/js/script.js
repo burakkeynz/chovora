@@ -219,4 +219,3 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 });
-export { isUserLoggedIn };
