@@ -7,10 +7,6 @@ import {
   checkAuth,
 } from "./script.js"; // checkAuth fonksiyonu da script.js'ten import edilmeli
 
-function getTokenFromStorage() {
-  return localStorage.getItem("token");
-}
-
 async function mergeCartWithBackend() {
   const localCart = JSON.parse(localStorage.getItem("cart")) || [];
   if (localCart.length === 0) return;
@@ -20,7 +16,6 @@ async function mergeCartWithBackend() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${getTokenFromStorage()}`,
       },
       credentials: "include",
       body: JSON.stringify({ product: item }),
@@ -63,7 +58,6 @@ function attachQuantityListeners() {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${getTokenFromStorage()}`,
         },
         credentials: "include",
         body: JSON.stringify({
@@ -147,7 +141,6 @@ function renderCartItems(items) {
         await fetch(`${baseURL}/api/cart/${id}`, {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${getTokenFromStorage()}`,
           },
           method: "DELETE",
           credentials: "include",
@@ -189,7 +182,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   fetch(`${baseURL}/api/cart`, {
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${getTokenFromStorage()}`,
     },
     credentials: "include",
   })
