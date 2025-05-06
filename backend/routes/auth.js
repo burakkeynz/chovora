@@ -74,18 +74,13 @@ router.post("/login", async (req, res) => {
 
 // Giriş kontrolü
 router.get("/check-auth", (req, res) => {
-  const token = req.cookies.token;
+  const userId = req.cookies?.userId;
 
-  if (!token) {
+  if (!userId) {
     return res.status(401).json({ error: "Giriş yapılmamış." });
   }
 
-  try {
-    const decoded = jwt.verify(token, JWT_SECRET);
-    res.status(200).json({ userId: decoded.userId });
-  } catch (err) {
-    return res.status(401).json({ error: "Geçersiz token." });
-  }
+  res.status(200).json({ userId });
 });
 
 // Çıkış
