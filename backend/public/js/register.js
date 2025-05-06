@@ -1,4 +1,5 @@
 import { baseURL } from "./config.js";
+import { getLoginState, setLoginState } from "./script.js";
 
 document
   .getElementById("register-form")

@@ -2,16 +2,24 @@ import { baseURL } from "./config.js";
 
 let isUserLoggedIn = false;
 
+export function setLoginState(state) {
+  isUserLoggedIn = state;
+}
+
+export function getLoginState() {
+  return isUserLoggedIn;
+}
+
 // Sadece login durumunu kontrol eder
 async function checkAuth() {
   try {
     const res = await fetch(`${baseURL}/api/auth/check-auth`, {
       credentials: "include",
     });
-    isUserLoggedIn = res.ok;
+    setLoginState(res.ok);
   } catch (err) {
     console.warn("check-auth error:", err);
-    isUserLoggedIn = false;
+    setLoginState(false);
   }
 }
 
@@ -20,7 +28,7 @@ export function updateLoginUI() {
   const loginLink = document.getElementById("login-link");
   const logoutLink = document.getElementById("logout-link");
 
-  if (isUserLoggedIn) {
+  if (getLoginState()) {
     loginLink.style.display = "none";
     logoutLink.style.display = "flex";
   } else {
@@ -112,7 +120,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           "/images/default.png",
       };
 
-      if (isUserLoggedIn) {
+      if (getLoginState()) {
         fetch(`${baseURL}/api/cart`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -139,7 +147,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   document.getElementById("cart-link")?.addEventListener("click", () => {
     const localCart = JSON.parse(localStorage.getItem("cart")) || [];
-    if (isUserLoggedIn || localCart.length > 0) {
+    if (getLoginState() || localCart.length > 0) {
       window.location.href = "cart.html";
     } else {
       localStorage.removeItem("loginReason");
@@ -150,7 +158,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 
   document.getElementById("favorites-link")?.addEventListener("click", () => {
-    if (isUserLoggedIn) {
+    if (getLoginState()) {
       window.location.href = "favourites.html";
     } else {
       localStorage.removeItem("loginReason");

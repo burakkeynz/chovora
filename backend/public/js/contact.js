@@ -1,4 +1,5 @@
 import { baseURL } from "./config.js";
+import { getLoginState, setLoginState } from "./script.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.querySelector("form");

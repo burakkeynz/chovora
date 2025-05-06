@@ -1,3 +1,5 @@
+import { getLoginState, setLoginState } from "./script.js";
+
 document.addEventListener("DOMContentLoaded", () => {
   const urlParams = new URLSearchParams(window.location.search);
   const query = urlParams.get("q")?.toLowerCase() || "";

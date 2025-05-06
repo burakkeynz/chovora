@@ -2,6 +2,7 @@ import { baseURL } from "./config.js";
 import { showToast } from "./script.js";
 import { updateLoginUI } from "./script.js";
 import { isUserLoggedIn } from "./script.js";
+import { getLoginState, setLoginState } from "./script.js";
 
 // Sadece login durumunu kontrol eder
 async function checkAuth() {
@@ -84,7 +85,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           "/images/default.png",
       };
 
-      if (isUserLoggedIn) {
+      if (getLoginState()) {
         fetch(`${baseURL}/api/cart`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -122,7 +123,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 
   document.getElementById("favorites-link")?.addEventListener("click", () => {
-    if (isUserLoggedIn) {
+    if (getLoginState()) {
       window.location.href = "favourites.html";
     } else {
       localStorage.removeItem("loginReason");
