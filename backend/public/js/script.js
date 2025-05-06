@@ -11,7 +11,7 @@ export function getLoginState() {
 }
 
 // Sadece login durumunu kontrol eder
-async function checkAuth() {
+export async function checkAuth() {
   try {
     const res = await fetch(`${baseURL}/api/auth/check-auth`, {
       credentials: "include",

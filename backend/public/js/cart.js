@@ -4,36 +4,8 @@ import {
   updateLoginUI,
   getLoginState,
   setLoginState,
-} from "./script.js";
-
-async function checkAuth() {
-  try {
-    const res = await fetch(`${baseURL}/api/auth/check-auth`, {
-      credentials: "include",
-    });
-    setLoginState(res.ok);
-  } catch {
-    setLoginState(false);
-  }
-}
-function showElementSmoothly(idToShow, idToHide) {
-  const elShow = document.getElementById(idToShow);
-  const elHide = document.getElementById(idToHide);
-
-  if (elHide) {
-    elHide.classList.remove("visible");
-    setTimeout(() => {
-      elHide.style.display = "none";
-    }, 300);
-  }
-
-  if (elShow) {
-    elShow.style.display = "flex";
-    setTimeout(() => {
-      elShow.classList.add("visible");
-    }, 10);
-  }
-}
+  checkAuth,
+} from "./script.js"; // checkAuth fonksiyonu da script.js'ten import edilmeli
 
 async function mergeCartWithBackend() {
   const localCart = JSON.parse(localStorage.getItem("cart")) || [];
@@ -51,28 +23,6 @@ async function mergeCartWithBackend() {
   localStorage.removeItem("cart");
 }
 
-function addToFavorites(productId) {
-  if (!productId) return;
-
-  if (!getLoginState()) {
-    showToast("Favorilere eklemek için giriş yapmalısınız.");
-    return;
-  }
-
-  fetch(`${baseURL}/api/favourites`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    credentials: "include",
-    body: JSON.stringify({ productId }),
-  })
-    .then((res) => {
-      if (!res.ok) throw new Error();
-      showToast("Ürün favorilere eklendi 💛");
-    })
-    .catch(() => showToast("Favori eklenemedi."));
-}
-window.addToFavorites = addToFavorites;
-
 function recalculateTotalPrice() {
   const totalPriceEl = document.getElementById("total-price");
   let total = 0;
@@ -89,8 +39,6 @@ function recalculateTotalPrice() {
 }
 
 function attachQuantityListeners() {
-  if (!getLoginState()) return;
-
   document.querySelectorAll(".qty-btn").forEach((btn) => {
     btn.addEventListener("click", async function (e) {
       e.preventDefault();
@@ -214,18 +162,20 @@ function renderCartItems(items) {
 
 document.addEventListener("DOMContentLoaded", async () => {
   await checkAuth();
-  updateLoginUI();
 
-  if (getLoginState()) {
-    await mergeCartWithBackend();
-    fetch(`${baseURL}/api/cart`, {
-      credentials: "include",
-    })
-      .then((res) => res.json())
-      .then((data) => renderCartItems(data.cart))
-      .catch(() => showToast("Sepet yüklenemedi"));
-  } else {
-    const localCart = JSON.parse(localStorage.getItem("cart")) || [];
-    renderCartItems(localCart);
+  if (!getLoginState()) {
+    showToast("Sepetinizi görüntülemek için giriş yapmalısınız.");
+    window.location.href = "login.html";
+    return;
   }
+
+  updateLoginUI();
+  await mergeCartWithBackend();
+
+  fetch(`${baseURL}/api/cart`, {
+    credentials: "include",
+  })
+    .then((res) => res.json())
+    .then((data) => renderCartItems(data.cart))
+    .catch(() => showToast("Sepet yüklenemedi"));
 });
