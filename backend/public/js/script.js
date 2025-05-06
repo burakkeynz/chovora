@@ -22,20 +22,34 @@ async function checkAuth() {
     setLoginState(false);
   }
 }
+function showElementSmoothly(idToShow, idToHide) {
+  const elShow = document.getElementById(idToShow);
+  const elHide = document.getElementById(idToHide);
+
+  if (elHide) {
+    elHide.classList.remove("visible");
+    setTimeout(() => {
+      elHide.style.display = "none";
+    }, 300);
+  }
+
+  if (elShow) {
+    elShow.style.display = "flex"; // flex'i hemen veririz
+    setTimeout(() => {
+      elShow.classList.add("visible"); // ardından opacity geçişi başlar
+    }, 10); // 10ms yeterli
+  }
+}
 
 // Login ve logout butonlarını göster/gizle
 export function updateLoginUI() {
-  const loginLink = document.getElementById("login-link");
-  const logoutLink = document.getElementById("logout-link");
-
   if (getLoginState()) {
-    loginLink.style.display = "none";
-    logoutLink.style.display = "flex";
+    showElementSmoothly("logout-link", "login-link");
   } else {
-    logoutLink.style.display = "none";
-    loginLink.style.display = "flex";
+    showElementSmoothly("login-link", "logout-link");
   }
 }
+
 export function showToast(message) {
   const container = document.getElementById("toast-container");
   if (!container) return;
