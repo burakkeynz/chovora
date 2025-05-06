@@ -1,26 +1,29 @@
 import { baseURL } from "./config.js";
-import { showToast } from "./script.js";
-import { updateLoginUI } from "./script.js";
-import { getLoginState, setLoginState } from "./script.js";
+import {
+  showToast,
+  updateLoginUI,
+  getLoginState,
+  setLoginState,
+} from "./script.js";
 
-// Sadece login durumunu kontrol eder
+// Giriş kontrolü
 async function checkAuth() {
   try {
     const res = await fetch(`${baseURL}/api/auth/check-auth`, {
       credentials: "include",
     });
-    isUserLoggedIn = res.ok;
+    setLoginState(res.ok); // ✅ Login state'i doğru şekilde ayarla
   } catch (err) {
     console.warn("check-auth error:", err);
-    isUserLoggedIn = false;
+    setLoginState(false);
   }
 }
 
-// Favorilere ekleme işlemi
+// Favorilere ekleme
 function addToFavorites(productId) {
   if (!productId) return;
 
-  if (!isUserLoggedIn) {
+  if (!getLoginState()) {
     showToast("Favorilere eklemek için giriş yapmalısınız.");
     return;
   }
@@ -43,9 +46,10 @@ function addToFavorites(productId) {
 window.addToFavorites = addToFavorites;
 
 document.addEventListener("DOMContentLoaded", async () => {
-  await checkAuth();
-  await updateLoginUI();
+  await checkAuth(); // ✅ Giriş durumu belirlenir
+  updateLoginUI(); // ✅ Navbar login/logout güncellenir
 
+  // Çıkış
   document
     .getElementById("logout-link")
     ?.addEventListener("click", async (e) => {
@@ -57,6 +61,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       window.location.href = "logout.html";
     });
 
+  // Ürün detayına yönlendirme
   document.querySelectorAll(".product-card").forEach((card) => {
     card.addEventListener("click", function (e) {
       if (e.target.closest(".buy-btn") || e.target.closest(".fav-btn")) return;
@@ -66,6 +71,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   });
 
+  // Sepete ekleme
   document.querySelectorAll(".buy-btn").forEach((btn) => {
     btn.addEventListener("click", () => {
       const card = btn.closest(".product-card");
@@ -102,6 +108,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   });
 
+  // Favorilere ekleme
   document.querySelectorAll(".fav-btn").forEach((btn) => {
     btn.addEventListener("click", function () {
       const productId = this.closest(".product-card").getAttribute("data-id");
@@ -109,33 +116,35 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   });
 
+  // Sepet yönlendirme
   document.getElementById("cart-link")?.addEventListener("click", () => {
     const localCart = JSON.parse(localStorage.getItem("cart")) || [];
-    if (isUserLoggedIn || localCart.length > 0) {
+    if (getLoginState() || localCart.length > 0) {
       window.location.href = "cart.html";
     } else {
-      localStorage.removeItem("loginReason");
       localStorage.setItem("redirectAfterLogin", "cart.html");
       localStorage.setItem("loginReason", "cartAccess");
       window.location.href = "login.html";
     }
   });
 
+  // Favoriler yönlendirme
   document.getElementById("favorites-link")?.addEventListener("click", () => {
     if (getLoginState()) {
       window.location.href = "favourites.html";
     } else {
-      localStorage.removeItem("loginReason");
       localStorage.setItem("redirectAfterLogin", "favourites.html");
       localStorage.setItem("loginReason", "favoritesAccess");
       window.location.href = "login.html";
     }
   });
 
+  // Giriş sayfasına yönlendirme
   document.getElementById("login-link")?.addEventListener("click", () => {
     window.location.href = "login.html";
   });
 
+  // Arama kutusu işlemleri
   const searchInput = document.getElementById("search-input");
   const suggestionsBox = document.getElementById("suggestions");
   const products = [
