@@ -46,16 +46,8 @@ router.post("/login", async (req, res) => {
       expiresIn: "7d",
     });
 
-    // 🟢 Token ile birlikte userId'yi de cookie olarak ekle
     res.cookie("token", token, {
       httpOnly: true,
-      secure: true,
-      sameSite: "None",
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    });
-
-    res.cookie("userId", user._id.toString(), {
-      httpOnly: false, // frontend erişebilsin
       secure: true,
       sameSite: "None",
       maxAge: 7 * 24 * 60 * 60 * 1000,
@@ -71,23 +63,23 @@ router.post("/login", async (req, res) => {
   }
 });
 
-// Giriş kontrolü
+// ✅ Giriş kontrolü - token üzerinden
 router.get("/check-auth", (req, res) => {
-  const userId = req.cookies?.userId;
-  if (!userId) return res.status(401).json({ error: "Giriş yapılmamış." });
+  const token = req.cookies?.token;
+  if (!token) return res.status(401).json({ error: "Giriş yapılmamış." });
 
-  res.status(200).json({ userId });
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    res.status(200).json({ userId: decoded.userId });
+  } catch (err) {
+    return res.status(401).json({ error: "Geçersiz token." });
+  }
 });
 
 // Çıkış
 router.get("/logout", (req, res) => {
   res.clearCookie("token", {
     httpOnly: true,
-    secure: true,
-    sameSite: "None",
-  });
-  res.clearCookie("userId", {
-    httpOnly: false,
     secure: true,
     sameSite: "None",
   });
