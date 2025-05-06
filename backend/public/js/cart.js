@@ -54,7 +54,7 @@ function renderCartItems(items) {
   if (!items || items.length === 0) {
     container.innerHTML = `
       <div class="empty-cart">
-        <img src="images/empty-cart.png" alt="Boş Sepet" />
+        <img src="images/empty-cart.png" alt="Boş Sepet" class="empty-image" />
         <p>Sepetinizde ürün bulunmamaktadır 🧺</p>
       </div>`;
     return;
@@ -64,12 +64,25 @@ function renderCartItems(items) {
     const div = document.createElement("div");
     div.className = "cart-item";
     div.innerHTML = `
-      <img src="${item.image}" alt="${item.name}" />
-      <div class="cart-info">
-        <h3>${item.name}</h3>
-        <p>Fiyat: ${item.price.toFixed(2)} ₺</p>
-        <p>Miktar: ${item.quantity}</p>
-        <button class="delete-btn" data-id="${item._id}">Sil</button>
+      <div class="cart-item-left">
+        <img src="${item.image}" alt="${item.name}" class="cart-img" />
+      </div>
+      <div class="cart-item-right">
+        <div class="cart-item-top">
+          <span class="cart-item-name">${item.name}</span>
+          <span class="cart-item-price">₺${item.price.toFixed(2)}</span>
+          <button class="delete-btn" data-id="${
+            item.productId || item._id
+          }">Sil</button>
+        </div>
+        <div class="cart-item-bottom">
+          <span>Miktar:</span>
+          <div class="quantity-controls">
+            <button class="qty-btn decrease">−</button>
+            <span class="product-qty">${item.quantity}</span>
+            <button class="qty-btn increase">+</button>
+          </div>
+        </div>
       </div>`;
     container.appendChild(div);
   });
