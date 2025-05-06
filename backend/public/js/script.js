@@ -29,6 +29,47 @@ function toggleLoginUI() {
   }
 }
 
+export function showToast(message) {
+  const container = document.getElementById("toast-container");
+  if (!container) return;
+  const toast = document.createElement("div");
+  toast.className = "toast";
+  toast.textContent = message;
+  const index = container.querySelectorAll(".toast").length;
+  toast.style.top = `${index * 60}px`;
+  container.appendChild(toast);
+  setTimeout(() => toast.classList.add("hide"), 3000);
+  setTimeout(() => toast.remove(), 3500);
+}
+
+function addToFavorites(productId) {
+  if (!productId) return;
+
+  if (!isUserLoggedIn) {
+    showToast("Favori eklemek için giriş yapmalısınız.");
+    localStorage.setItem("redirectAfterLogin", window.location.pathname);
+    localStorage.setItem("loginReason", "favoritesAccess");
+    window.location.href = "login.html";
+    return;
+  }
+
+  fetch(`${baseURL}/api/favourites`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify({ productId }),
+  })
+    .then((res) => {
+      if (!res.ok) throw new Error("Favori eklenemedi");
+      showToast("Ürün favorilere eklendi 💛");
+    })
+    .catch(() => {
+      showToast("Favori eklenemedi.");
+    });
+}
+
+window.addToFavorites = addToFavorites;
+
 document.addEventListener("DOMContentLoaded", async () => {
   await checkAuth();
 
@@ -85,6 +126,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         localStorage.setItem("cart", JSON.stringify(localCart));
         showToast("Giriş yapmadan önce sepetinize eklendi 🧸");
       }
+    });
+  });
+
+  document.querySelectorAll(".fav-btn").forEach((btn) => {
+    btn.addEventListener("click", function () {
+      const productId = this.closest(".product-card").getAttribute("data-id");
+      addToFavorites(productId);
     });
   });
 
@@ -160,50 +208,3 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 });
-
-export function showToast(message) {
-  const container = document.getElementById("toast-container");
-  if (!container) return;
-  const toast = document.createElement("div");
-  toast.className = "toast";
-  toast.textContent = message;
-  const index = container.querySelectorAll(".toast").length;
-  toast.style.top = `${index * 60}px`;
-  container.appendChild(toast);
-  setTimeout(() => toast.classList.add("hide"), 3000);
-  setTimeout(() => toast.remove(), 3500);
-}
-
-function addToFavorites(productId) {
-  if (!productId) return;
-
-  if (!isUserLoggedIn) {
-    showToast("Favori eklemek için giriş yapmalısınız.");
-    localStorage.setItem("redirectAfterLogin", window.location.pathname);
-    localStorage.setItem("loginReason", "favoritesAccess");
-    return (window.location.href = "login.html");
-  }
-
-  fetch(`${baseURL}/api/favourites`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    credentials: "include",
-    body: JSON.stringify({ productId }),
-  })
-    .then((res) => {
-      if (!res.ok) throw new Error("Favori eklenemedi");
-      showToast("Ürün favorilere eklendi 💛");
-    })
-    .catch(() => {
-      showToast("Favori eklenemedi.");
-    });
-}
-
-document.querySelectorAll(".fav-btn").forEach((btn) => {
-  btn.addEventListener("click", function () {
-    const productId = this.closest(".product-card").getAttribute("data-id");
-    addToFavorites(productId);
-  });
-});
-
-window.addToFavorites = addToFavorites;

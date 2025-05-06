@@ -10,10 +10,16 @@ document.addEventListener("DOMContentLoaded", () => {
     credentials: "include",
   })
     .then(async (res) => {
-      if (!res.ok) throw new Error("Unauthorized");
-      const data = await res.json();
+      if (res.status === 401) {
+        localStorage.setItem("redirectAfterLogin", "favourites.html");
+        localStorage.setItem("loginReason", "favoritesAccess");
+        window.location.href = "login.html";
+        return;
+      }
 
+      const data = await res.json();
       const { favorites } = data;
+
       if (!favorites || favorites.length === 0) {
         container.innerHTML = `<p style="text-align:center">Henüz favori ürününüz yok.</p>`;
         return;
@@ -57,7 +63,6 @@ document.addEventListener("DOMContentLoaded", () => {
         container.appendChild(card);
       });
 
-      // Remove butonlarını tanımla
       document.querySelectorAll(".remove-btn").forEach((btn) => {
         btn.addEventListener("click", () => {
           const productId = btn.getAttribute("data-id");
@@ -78,7 +83,6 @@ function removeFromFavorites(productId) {
     .then((res) => {
       if (!res.ok) throw new Error("Silinemedi");
 
-      // DOM'dan kartı kaldır
       const cardToRemove = document.querySelector(`[data-id="${productId}"]`);
       if (cardToRemove) {
         cardToRemove.remove();
