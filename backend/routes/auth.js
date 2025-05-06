@@ -46,7 +46,7 @@ router.post("/login", async (req, res) => {
       expiresIn: "7d",
     });
 
-    res.cookie("token", token, {
+    res.cookie("userId", user._id.toString(), {
       httpOnly: true,
       secure: true,
       sameSite: "None",
@@ -81,6 +81,7 @@ router.get("/check-auth", (req, res) => {
 //(Logout)
 router.get("/logout", (req, res) => {
   res.clearCookie("token");
+  res.clearCookie("userId");
   res.status(200).json({ message: "Çıkış yapıldı." });
 });
 
