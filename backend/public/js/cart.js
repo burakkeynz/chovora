@@ -12,7 +12,7 @@ async function checkAuth() {
       credentials: "include",
     });
     setLoginState(res.ok);
-  } catch (err) {
+  } catch {
     setLoginState(false);
   }
 }
@@ -78,6 +78,9 @@ function attachQuantityListeners() {
       e.preventDefault();
       e.stopPropagation();
 
+      if (btn.disabled) return;
+      btn.disabled = true;
+
       const isIncrease = this.classList.contains("increase");
       const itemEl = this.closest(".cart-item");
       const qtySpan = itemEl.querySelector(".product-qty");
@@ -93,19 +96,23 @@ function attachQuantityListeners() {
         }),
       });
 
+      btn.disabled = false;
+
       if (res.ok) {
         let currentQty = parseInt(qtySpan.textContent);
         currentQty += isIncrease ? 1 : -1;
 
         if (currentQty <= 0) {
           itemEl.remove();
-          if (document.querySelectorAll(".cart-item").length === 0) {
-            document.getElementById("empty-cart").style.display = "block";
-            document.getElementById("cart-summary").style.display = "none";
-          }
         } else {
           qtySpan.textContent = currentQty;
         }
+
+        const remainingItems = document.querySelectorAll(".cart-item").length;
+        document.getElementById("empty-cart").style.display =
+          remainingItems === 0 ? "block" : "none";
+        document.getElementById("cart-summary").style.display =
+          remainingItems === 0 ? "none" : "block";
 
         recalculateTotalPrice();
       } else {
@@ -125,6 +132,8 @@ function renderCartItems(items) {
         <img src="images/empty-cart.png" alt="Boş Sepet" class="empty-image" />
         <p>Sepetinizde ürün bulunmamaktadır 🧺</p>
       </div>`;
+    document.getElementById("empty-cart").style.display = "block";
+    document.getElementById("cart-summary").style.display = "none";
     return;
   }
 
@@ -167,10 +176,11 @@ function renderCartItems(items) {
 
         btn.closest(".cart-item").remove();
 
-        if (document.querySelectorAll(".cart-item").length === 0) {
-          document.getElementById("empty-cart").style.display = "block";
-          document.getElementById("cart-summary").style.display = "none";
-        }
+        const remainingItems = document.querySelectorAll(".cart-item").length;
+        document.getElementById("empty-cart").style.display =
+          remainingItems === 0 ? "block" : "none";
+        document.getElementById("cart-summary").style.display =
+          remainingItems === 0 ? "none" : "block";
 
         recalculateTotalPrice();
       } catch {
@@ -179,6 +189,7 @@ function renderCartItems(items) {
     });
   });
 
+  document.getElementById("cart-summary").style.display = "block";
   attachQuantityListeners();
   recalculateTotalPrice();
 }
