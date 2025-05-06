@@ -86,3 +86,4 @@ function removeFromFavorites(productId) {
       showToast("Silme işlemi başarısız.");
     });
 }
+window.removeFromFavorites = removeFromFavorites;
