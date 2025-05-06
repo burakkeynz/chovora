@@ -1,6 +1,5 @@
 import { baseURL } from "./config.js";
 import { showToast, updateLoginUI } from "./script.js";
-
 document.addEventListener("DOMContentLoaded", () => {
   const container = document.getElementById("cart-items");
   if (!container) return;
@@ -18,23 +17,11 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       const data = await res.json();
-      const items = data.cart || [];
-
-      if (!items.length) {
-        container.innerHTML = `
-          <div class="empty-cart">
-            <img src="images/empty-cart.png" alt="Boş Sepet" class="empty-image" />
-            <p>Sepetinizde ürün bulunmamaktadır 🧺</p>
-          </div>`;
-        document.getElementById("empty-cart").style.display = "block";
-        document.getElementById("cart-summary").style.display = "none";
-        return;
-      }
-
-      renderCartItems(items);
+      renderCartItems(data.cart || []);
     })
     .catch(() => {
-      container.innerHTML = `<p style="text-align:center">Sepeti görüntülemek için giriş yapmalısınız.</p>`;
+      container.innerHTML =
+        "<p style='text-align:center'>Sepeti görüntülemek için giriş yapmalısınız.</p>";
     });
 });
 
