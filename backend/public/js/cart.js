@@ -16,6 +16,32 @@ async function checkAuth() {
     setLoginState(false);
   }
 }
+function showElementSmoothly(idToShow, idToHide) {
+  const elShow = document.getElementById(idToShow);
+  const elHide = document.getElementById(idToHide);
+
+  if (elHide) {
+    elHide.classList.remove("visible");
+    setTimeout(() => {
+      elHide.style.display = "none";
+    }, 300);
+  }
+
+  if (elShow) {
+    elShow.style.display = "flex";
+    setTimeout(() => {
+      elShow.classList.add("visible");
+    }, 10);
+  }
+}
+
+export function updateLoginUI() {
+  if (getLoginState()) {
+    showElementSmoothly("logout-link", "login-link");
+  } else {
+    showElementSmoothly("login-link", "logout-link");
+  }
+}
 
 async function mergeCartWithBackend() {
   const localCart = JSON.parse(localStorage.getItem("cart")) || [];
