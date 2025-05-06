@@ -1,4 +1,5 @@
 import { baseURL } from "./config.js";
+import { showToast } from "./script.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const infoBox = document.getElementById("login-info-msg");
@@ -8,15 +9,16 @@ document.addEventListener("DOMContentLoaded", () => {
   if (infoBox && redirectPage && loginReason) {
     if (redirectPage === "cart.html" && loginReason === "cartAccess") {
       infoBox.textContent = "Lütfen sepetinizi görüntülemek için giriş yapın.";
+      showToast("Sepetinizi görmek için önce giriş yapın.");
     } else if (
       redirectPage === "favourites.html" &&
       loginReason === "favoritesAccess"
     ) {
       infoBox.textContent =
         "Favori ürünlerinizi görüntülemek için giriş yapmalısınız.";
+      showToast("Favori ürünlere erişmek için giriş yapmalısınız.");
     }
     infoBox.style.display = "block";
-    localStorage.removeItem("loginReason");
   }
 
   const form = document.getElementById("login-form");
@@ -36,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const res = await fetch(`${baseURL}/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        credentials: "include", //  Cookie ile giriş için gerekli
+        credentials: "include",
         body: JSON.stringify({ email, password }),
       });
 
@@ -46,12 +48,21 @@ document.addEventListener("DOMContentLoaded", () => {
         await syncLocalCartToBackend();
 
         const redirect = localStorage.getItem("redirectAfterLogin");
+        const loginReason = localStorage.getItem("loginReason");
+
         localStorage.removeItem("redirectAfterLogin");
+        localStorage.removeItem("loginReason");
 
         if (redirect) {
-          window.location.href = redirect;
+          showToast("Giriş başarılı, yönlendiriliyorsunuz...");
+          setTimeout(() => {
+            window.location.href = redirect;
+          }, 1200);
         } else {
-          window.location.href = "index.html";
+          showToast("Giriş başarılı!");
+          setTimeout(() => {
+            window.location.href = "index.html";
+          }, 1000);
         }
       } else {
         alert("Hata: " + data.error);

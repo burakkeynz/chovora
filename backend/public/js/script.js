@@ -9,10 +9,11 @@ async function checkAuth() {
       credentials: "include",
     });
     isUserLoggedIn = res.ok;
-    toggleLoginUI();
   } catch (err) {
-    console.error("check-auth error:", err);
+    console.warn("check-auth error:", err);
+    isUserLoggedIn = false;
   }
+  toggleLoginUI();
 }
 
 function toggleLoginUI() {
@@ -31,7 +32,6 @@ function toggleLoginUI() {
 document.addEventListener("DOMContentLoaded", async () => {
   await checkAuth();
 
-  // Çıkış
   document
     .getElementById("logout-link")
     ?.addEventListener("click", async (e) => {
@@ -43,7 +43,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       window.location.href = "logout.html";
     });
 
-  // Ürün kartı tıklama
   document.querySelectorAll(".product-card").forEach((card) => {
     card.addEventListener("click", function (e) {
       if (e.target.closest(".buy-btn") || e.target.closest(".fav-btn")) return;
@@ -53,7 +52,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   });
 
-  // Sepete Ekle
   document.querySelectorAll(".buy-btn").forEach((btn) => {
     btn.addEventListener("click", () => {
       const card = btn.closest(".product-card");
@@ -85,44 +83,36 @@ document.addEventListener("DOMContentLoaded", async () => {
         const localCart = JSON.parse(localStorage.getItem("cart")) || [];
         localCart.push(product);
         localStorage.setItem("cart", JSON.stringify(localCart));
-        showToast("Giriş yapmadan önce sepetinize eklendi 🧺");
+        showToast("Giriş yapmadan önce sepetinize eklendi 🧸");
       }
     });
   });
 
-  // Sepet Linki
   document.getElementById("cart-link")?.addEventListener("click", () => {
     const localCart = JSON.parse(localStorage.getItem("cart")) || [];
     if (isUserLoggedIn || localCart.length > 0) {
       window.location.href = "cart.html";
     } else {
-      localStorage.removeItem("loginReason");
       localStorage.setItem("loginReason", "cartAccess");
       localStorage.setItem("redirectAfterLogin", "cart.html");
-
       window.location.href = "login.html";
     }
   });
 
-  // Favoriler Linki
   document.getElementById("favorites-link")?.addEventListener("click", () => {
     if (isUserLoggedIn) {
       window.location.href = "favourites.html";
     } else {
-      localStorage.removeItem("loginReason");
       localStorage.setItem("loginReason", "favoritesAccess");
       localStorage.setItem("redirectAfterLogin", "favourites.html");
-
       window.location.href = "login.html";
     }
   });
 
-  // Giriş yap butonu
   document.getElementById("login-link")?.addEventListener("click", () => {
     window.location.href = "login.html";
   });
 
-  // Arama kutusu
   const searchInput = document.getElementById("search-input");
   const suggestionsBox = document.getElementById("suggestions");
   const products = [
