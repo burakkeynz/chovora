@@ -1,19 +1,8 @@
 import { baseURL } from "./config.js";
+import { showToast } from "./script.js"; // toast'ı dışarıdan alıyoruz
+import { updateLoginUI } from "./script.js"; // yeni eklenen fonksiyon
 
 let isUserLoggedIn = false;
-
-// Sadece login durumunu kontrol eder
-async function checkAuth() {
-  try {
-    const res = await fetch(`${baseURL}/api/auth/check-auth`, {
-      credentials: "include",
-    });
-    isUserLoggedIn = res.ok;
-  } catch (err) {
-    console.warn("check-auth error:", err);
-    isUserLoggedIn = false;
-  }
-}
 
 // Login ve logout butonlarını göster/gizle
 function toggleLoginUI() {
@@ -70,8 +59,7 @@ function addToFavorites(productId) {
 window.addToFavorites = addToFavorites;
 
 document.addEventListener("DOMContentLoaded", async () => {
-  await checkAuth(); // 👈 İlk olarak login durumunu al
-  toggleLoginUI(); // 👈 DOM hazırken UI'yi güncelle
+  await updateLoginUI();
 
   // Logout
   document

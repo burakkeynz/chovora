@@ -2,8 +2,11 @@ import { baseURL } from "./config.js";
 
 let isUserLoggedIn = false;
 
-// Kullanıcı giriş yapmış mı
-async function checkAuth() {
+// Kullanıcı giriş yapmış mı ve UI'yi güncelle
+async function updateLoginUI() {
+  const loginLink = document.getElementById("login-link");
+  const logoutLink = document.getElementById("logout-link");
+
   try {
     const res = await fetch(`${baseURL}/api/auth/check-auth`, {
       credentials: "include",
@@ -13,22 +16,17 @@ async function checkAuth() {
     console.warn("check-auth error:", err);
     isUserLoggedIn = false;
   }
-  toggleLoginUI();
-}
-
-function toggleLoginUI() {
-  const loginLink = document.getElementById("login-link");
-  const logoutLink = document.getElementById("logout-link");
 
   if (isUserLoggedIn) {
-    loginLink?.classList.remove("visible");
-    logoutLink?.classList.add("visible");
+    loginLink.style.display = "none";
+    logoutLink.style.display = "flex";
   } else {
-    logoutLink?.classList.remove("visible");
-    loginLink?.classList.add("visible");
+    logoutLink.style.display = "none";
+    loginLink.style.display = "flex";
   }
 }
 
+// Toast mesaj fonksiyonu
 export function showToast(message) {
   const container = document.getElementById("toast-container");
   if (!container) return;
@@ -42,12 +40,13 @@ export function showToast(message) {
   setTimeout(() => toast.remove(), 3500);
 }
 
+// Favorilere ekleme işlemi
 function addToFavorites(productId) {
   if (!productId) return;
 
   if (!isUserLoggedIn) {
     showToast("Favorilere eklemek için giriş yapmalısınız.");
-    return; // ❌ Giriş yapılmamışsa sadece toast gösteriyoruz, yönlendirme yok
+    return;
   }
 
   fetch(`${baseURL}/api/favourites`, {
@@ -68,7 +67,7 @@ function addToFavorites(productId) {
 window.addToFavorites = addToFavorites;
 
 document.addEventListener("DOMContentLoaded", async () => {
-  await checkAuth();
+  await updateLoginUI();
 
   document
     .getElementById("logout-link")
@@ -138,7 +137,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (isUserLoggedIn || localCart.length > 0) {
       window.location.href = "cart.html";
     } else {
-      localStorage.removeItem("loginReason"); // 🔁 Y2: önceki yönlendirme verisini temizle
+      localStorage.removeItem("loginReason");
       localStorage.setItem("redirectAfterLogin", "cart.html");
       localStorage.setItem("loginReason", "cartAccess");
       window.location.href = "login.html";
@@ -149,7 +148,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (isUserLoggedIn) {
       window.location.href = "favourites.html";
     } else {
-      localStorage.removeItem("loginReason"); // 🔁 Y2: önceki yönlendirme verisini temizle
+      localStorage.removeItem("loginReason");
       localStorage.setItem("redirectAfterLogin", "favourites.html");
       localStorage.setItem("loginReason", "favoritesAccess");
       window.location.href = "login.html";
