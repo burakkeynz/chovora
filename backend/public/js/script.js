@@ -1,5 +1,4 @@
 import { baseURL } from "./config.js";
-import { showToast } from "./script.js";
 
 let isUserLoggedIn = false;
 
@@ -28,6 +27,21 @@ export function updateLoginUI() {
     logoutLink.style.display = "none";
     loginLink.style.display = "flex";
   }
+}
+export function showToast(message) {
+  const container = document.getElementById("toast-container");
+  if (!container) return;
+
+  const toast = document.createElement("div");
+  toast.className = "toast";
+  toast.textContent = message;
+
+  const index = container.querySelectorAll(".toast").length;
+  toast.style.top = `${index * 60}px`;
+
+  container.appendChild(toast);
+  setTimeout(() => toast.classList.add("hide"), 3000);
+  setTimeout(() => toast.remove(), 3500);
 }
 
 // Favorilere ekleme işlemi
