@@ -46,12 +46,8 @@ function addToFavorites(productId) {
   if (!productId) return;
 
   if (!isUserLoggedIn) {
-    showToast("Favori eklemek için giriş yapmalısınız.");
-    localStorage.removeItem("loginReason"); // 🔁 Y1: yönlendirme verisini temizle
-    localStorage.setItem("redirectAfterLogin", window.location.pathname);
-    localStorage.setItem("loginReason", "favoritesAccess");
-    window.location.href = "login.html";
-    return;
+    showToast("Favorilere eklemek için giriş yapmalısınız.");
+    return; // ❌ Giriş yapılmamışsa sadece toast gösteriyoruz, yönlendirme yok
   }
 
   fetch(`${baseURL}/api/favourites`, {
