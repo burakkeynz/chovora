@@ -23,22 +23,28 @@ document.addEventListener("DOMContentLoaded", () => {
   })
     .then((res) => {
       if (res.ok) {
+        //  Giriş yapılmış  backend'den yükle
         loadCart();
-      } else if (!isCartEmpty) {
-        localStorage.setItem("redirectAfterLogin", "cart.html");
-        localStorage.setItem("loginReason", "cartAccess");
-        window.location.href = "login.html";
       } else {
-        renderEmptyCart();
+        if (isCartEmpty) {
+          // 👀 Sepet boş → sadece boş göster
+          renderEmptyCart();
+        } else {
+          // 🛑 Sepette ürün var → login'e yönlendir
+          localStorage.setItem("redirectAfterLogin", "cart.html");
+          localStorage.setItem("loginReason", "cartAccess");
+          window.location.href = "login.html";
+        }
       }
     })
-    .catch(() => {
-      if (!isCartEmpty) {
+    .catch((err) => {
+      console.error("Check-auth hatası:", err);
+      if (isCartEmpty) {
+        renderEmptyCart();
+      } else {
         localStorage.setItem("redirectAfterLogin", "cart.html");
         localStorage.setItem("loginReason", "cartAccess");
         window.location.href = "login.html";
-      } else {
-        renderEmptyCart();
       }
     });
 });

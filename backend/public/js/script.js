@@ -96,8 +96,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (isUserLoggedIn || localCart.length > 0) {
       window.location.href = "cart.html";
     } else {
-      localStorage.setItem("redirectAfterLogin", "cart.html");
+      localStorage.removeItem("loginReason");
       localStorage.setItem("loginReason", "cartAccess");
+      localStorage.setItem("redirectAfterLogin", "cart.html");
+
       window.location.href = "login.html";
     }
   });
@@ -107,8 +109,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (isUserLoggedIn) {
       window.location.href = "favourites.html";
     } else {
-      localStorage.setItem("redirectAfterLogin", "favourites.html");
+      localStorage.removeItem("loginReason");
       localStorage.setItem("loginReason", "favoritesAccess");
+      localStorage.setItem("redirectAfterLogin", "favourites.html");
+
       window.location.href = "login.html";
     }
   });
@@ -185,7 +189,7 @@ function addToFavorites(productId) {
 
   if (!isUserLoggedIn) {
     showToast("Favori eklemek için giriş yapmalısınız.");
-    localStorage.setItem("redirectAfterLogin", "index.html");
+    localStorage.setItem("redirectAfterLogin", window.location.pathname);
     localStorage.setItem("loginReason", "favoritesAccess");
     return (window.location.href = "login.html");
   }
