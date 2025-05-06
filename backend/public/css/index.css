@@ -219,6 +219,18 @@ main {
 .login-container a:hover {
   text-decoration: underline;
 }
+#login-link,
+#logout-link {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+#login-link.visible,
+#logout-link.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
 .password-wrapper {
   position: relative;
   width: 100%;
