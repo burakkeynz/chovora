@@ -1,4 +1,4 @@
-import { baseURL } from "./config.js"; // config.js'den baseURL
+const baseURL = window.baseURL;
 
 document
   .getElementById("register-form")

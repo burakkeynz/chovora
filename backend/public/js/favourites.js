@@ -1,4 +1,4 @@
-import { baseURL } from "./config.js"; // config.js'den baseURL'i alıyoruz
+const baseURL = window.baseURL;
 
 document.addEventListener("DOMContentLoaded", () => {
   const container = document.getElementById("favorites-container");
