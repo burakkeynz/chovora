@@ -226,14 +226,19 @@ main {
   transition: opacity 0.4s ease;
 }
 
+#login-link,
+#logout-link {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+  visibility: hidden; /* Bu da eklenirse hiç yer kaplamaz */
+}
+
 #login-link.visible,
 #logout-link.visible {
   opacity: 1;
   pointer-events: auto;
-}
-.password-wrapper {
-  position: relative;
-  width: 100%;
+  visibility: visible;
 }
 .password-wrapper.second-password {
   margin-bottom: 0px; /* Veya 4px gibi daha küçük bir değer */
