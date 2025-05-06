@@ -2,6 +2,7 @@ require("dotenv").config(); // .env dosyasını yükle
 const path = require("path");
 const express = require("express");
 const nodemailer = require("nodemailer");
+const cors = require("cors");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 const connectDB = require("./db");
