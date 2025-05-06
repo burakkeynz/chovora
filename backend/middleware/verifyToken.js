@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const JWT_SECRET = process.env.JWT_SECRET || "chovora_secret_key";
 
 const verifyToken = (req, res, next) => {
-  const token = req.cookies.token;
+  const token = req.cookies.token || req.headers.authorization?.split(" ")[1];
 
   if (!token) {
     return res
