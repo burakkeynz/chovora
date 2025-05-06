@@ -1,7 +1,6 @@
 require("dotenv").config(); // .env dosyasını yükle
 const path = require("path");
 const express = require("express");
-const cors = require("cors");
 const nodemailer = require("nodemailer");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
@@ -16,13 +15,26 @@ const FRONTEND_URL = process.env.FRONTEND_URL;
 
 connectDB();
 
-// Middleware'ler
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://chovora.vercel.app",
+  "https://www.chovora.com",
+  "https://chovora.com",
+];
+
 app.use(
   cors({
-    origin: FRONTEND_URL, // Dinamik frontend URL
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   })
 );
+
 app.use(cookieParser());
 app.use(express.json());
 
