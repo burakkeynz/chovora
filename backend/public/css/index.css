@@ -197,12 +197,12 @@ main {
 }
 .login-toggle {
   opacity: 0;
-  transition: opacity 0.3s ease;
   display: none;
+  transition: opacity 0.3s ease-in-out;
 }
 
 .login-toggle.visible {
-  display: flex;
+  display: flex !important;
   opacity: 1;
 }
 
