@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const Cart = require("../models/Cart");
+const verifyToken = require("../middleware/verifyToken"); // JWT middleware'i ekle
 
 // 🟢 1. Sepeti getir (GET /api/cart)
-router.get("/cart", async (req, res) => {
-  const userId = req.cookies?.userId;
-  if (!userId) return res.status(401).json({ cart: [] });
+router.get("/cart", verifyToken, async (req, res) => {
+  const userId = req.user.userId;
 
   try {
     const cartItems = await Cart.find({ userId });
@@ -17,10 +17,8 @@ router.get("/cart", async (req, res) => {
 });
 
 // 🟢 2. Sepete ürün ekle (POST /api/cart)
-router.post("/cart", async (req, res) => {
-  const userId = req.cookies?.userId;
-  if (!userId) return res.status(401).json({ message: "Giriş gerekli." });
-
+router.post("/cart", verifyToken, async (req, res) => {
+  const userId = req.user.userId;
   const { product } = req.body;
 
   try {
@@ -42,9 +40,8 @@ router.post("/cart", async (req, res) => {
 });
 
 // 🟢 3. Sepetten ürün sil (DELETE /api/cart/:id)
-router.delete("/cart/:id", async (req, res) => {
-  const userId = req.cookies?.userId;
-  if (!userId) return res.status(401).json({ message: "Yetkisiz." });
+router.delete("/cart/:id", verifyToken, async (req, res) => {
+  const userId = req.user.userId;
 
   try {
     await Cart.deleteOne({ userId, _id: req.params.id });
@@ -56,13 +53,9 @@ router.delete("/cart/:id", async (req, res) => {
 });
 
 // 🟢 4. Quantity güncelle (PUT /api/cart/update-quantity)
-router.put("/cart/update-quantity", async (req, res) => {
+router.put("/cart/update-quantity", verifyToken, async (req, res) => {
   const { productId, change } = req.body;
-  const userId = req.cookies?.userId;
-
-  if (!userId) {
-    return res.status(401).json({ message: "Kullanıcı kimliği bulunamadı." });
-  }
+  const userId = req.user.userId;
 
   try {
     const cartItem = await Cart.findOne({ userId, productId });
