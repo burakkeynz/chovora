@@ -195,7 +195,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   })
     .then((res) => res.json())
     .then((data) => {
-      console.log("Sepet verisi geldi:", data); // ✅ Artık doğru
+      console.log("Sepet verisi geldi:", data);
+
       renderCartItems(data.cart);
     })
     .catch(() => showToast("Sepet yüklenemedi"));
