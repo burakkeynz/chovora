@@ -46,7 +46,7 @@ router.post("/login", async (req, res) => {
       expiresIn: "7d",
     });
 
-    // 🟢 JWT Token Cookie'si
+    // 🟢 Token ile birlikte userId'yi de cookie olarak ekle
     res.cookie("token", token, {
       httpOnly: true,
       secure: true,
@@ -54,9 +54,8 @@ router.post("/login", async (req, res) => {
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-    // 🟢 userId Cookie'si (backend'in ihtiyacı için)
     res.cookie("userId", user._id.toString(), {
-      httpOnly: true,
+      httpOnly: false, // frontend erişebilsin
       secure: true,
       sameSite: "None",
       maxAge: 7 * 24 * 60 * 60 * 1000,
@@ -75,10 +74,7 @@ router.post("/login", async (req, res) => {
 // Giriş kontrolü
 router.get("/check-auth", (req, res) => {
   const userId = req.cookies?.userId;
-
-  if (!userId) {
-    return res.status(401).json({ error: "Giriş yapılmamış." });
-  }
+  if (!userId) return res.status(401).json({ error: "Giriş yapılmamış." });
 
   res.status(200).json({ userId });
 });
@@ -91,7 +87,7 @@ router.get("/logout", (req, res) => {
     sameSite: "None",
   });
   res.clearCookie("userId", {
-    httpOnly: true,
+    httpOnly: false,
     secure: true,
     sameSite: "None",
   });
