@@ -3,10 +3,8 @@ const path = require("path");
 const express = require("express");
 const cors = require("cors");
 const nodemailer = require("nodemailer");
-const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
-
 const connectDB = require("./db");
 const authRoutes = require("./routes/auth");
 const favouriteRoutes = require("./routes/favourites");
@@ -26,7 +24,7 @@ app.use(
   })
 );
 app.use(cookieParser());
-app.use(bodyParser.json());
+app.use(express.json());
 
 // Rotalar
 app.use("/api/auth", authRoutes);
