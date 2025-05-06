@@ -1,4 +1,4 @@
-const baseURL = window.baseURL;
+import { baseURL } from "./config.js";
 
 document
   .getElementById("register-form")

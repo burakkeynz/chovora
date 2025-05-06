@@ -1,4 +1,4 @@
-const baseURL = window.baseURL;
+import { baseURL } from "./config.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.querySelector("form");
