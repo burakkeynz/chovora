@@ -20,13 +20,18 @@ function toggleLoginUI() {
   const loginLink = document.getElementById("login-link");
   const logoutLink = document.getElementById("logout-link");
 
-  if (isUserLoggedIn) {
-    loginLink.style.display = "none";
-    logoutLink.style.display = "inline-block";
-  } else {
-    loginLink.style.display = "inline-block";
-    logoutLink.style.display = "none";
-  }
+  // Her iki butonu da önce görünürlükten sıfırla
+  loginLink?.classList.remove("visible");
+  logoutLink?.classList.remove("visible");
+
+  // Sayfa yüklendikten sonra görünürlük ver
+  setTimeout(() => {
+    if (isUserLoggedIn) {
+      logoutLink?.classList.add("visible");
+    } else {
+      loginLink?.classList.add("visible");
+    }
+  }, 100); // kısa gecikme ile DOM'un yerleşmesini bekle
 }
 
 // Toast mesaj fonksiyonu
