@@ -9,6 +9,10 @@ body {
   overflow-x: hidden;
 }
 
+.hidden {
+  display: none !important;
+}
+
 /* HEADER */
 .header-container {
   display: flex;
