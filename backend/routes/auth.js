@@ -65,7 +65,7 @@ router.post("/login", async (req, res) => {
   }
 });
 
-// ✅ Giriş kontrolü - token üzerinden
+//Giriş kontrolü-tokenle
 router.get("/check-auth", (req, res) => {
   const token = req.cookies?.token;
   if (!token) return res.status(401).json({ error: "Giriş yapılmamış." });
