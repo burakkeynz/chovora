@@ -120,48 +120,45 @@ function attachQuantityListeners() {
         return;
       }
 
-      // 1️⃣ Mevcut miktarı çek
+      // Optimistic UI ile anlık olarak gösteriyorum (delay oluyor öbür türlü)
       let currentQty = parseInt(qtySpan.textContent);
-
-      // 2️⃣ Önce gösterimi anında güncelle (Optimistic UI)
       let newQty = currentQty + (isIncrease ? 1 : -1);
-
-      // Eğer azaltma sonucu 0 veya daha azsa hemen kaldır
       if (newQty <= 0) {
         itemEl.remove();
       } else {
         qtySpan.textContent = newQty;
       }
-
       recalculateTotalPrice();
 
-      // 3️⃣ Sunucuya güncelleme isteği gönder
-      const res = await fetch(`${baseURL}/api/cart/update-quantity`, {
-        method: "PUT",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ productId, change: isIncrease ? 1 : -1 }),
-      });
+      //Gerçek güncellemeyi sunucuya gönderdiğim kısım
+      try {
+        const res = await fetch(`${baseURL}/api/cart/update-quantity`, {
+          method: "PUT",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ productId, change: isIncrease ? 1 : -1 }),
+        });
 
-      // 4️⃣ Sunucu hatası varsa, gösterimi geri al
-      if (!res.ok) {
-        showToast("Miktar güncellenemedi.");
+        if (!res.ok) throw new Error("Güncelleme başarısız");
 
-        // Geri al: eğer kaldırdıysan yeniden ekleyemezsin, sayfayı reload ettir
-        if (newQty <= 0) {
-          renderCartItems();
+        const data = await res.json();
+
+        // Backend’ten gelen değeri alıp senkron tutuyorum.
+        if (data.quantity <= 0) {
+          itemEl.remove();
         } else {
-          qtySpan.textContent = currentQty;
-          recalculateTotalPrice();
+          qtySpan.textContent = data.quantity;
         }
 
-        return;
-      }
+        recalculateTotalPrice();
 
-      // 5️⃣ Her şey yolundaysa: Eğer son ürünse boş sepeti tetikle
-      const remainingItems = document.querySelectorAll(".cart-item").length;
-      if (remainingItems === 0) {
-        renderCartItems([]); //
+        const remainingItems = document.querySelectorAll(".cart-item").length;
+        if (remainingItems === 0) renderCartItems([]);
+      } catch (err) {
+        showToast("Sunucu hatası: Güncelleme yapılamadı.");
+        // Hata varsa eski haline dönüştürme
+        qtySpan.textContent = currentQty;
+        recalculateTotalPrice();
       }
     });
   });
