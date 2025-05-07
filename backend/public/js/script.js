@@ -75,13 +75,14 @@ function addToFavorites(productId) {
     credentials: "include",
     body: JSON.stringify({ productId }),
   })
-    .then((res) => {
+    .then(async (res) => {
       if (res.status === 409) {
-        showToast("Bu ürün zaten favorilerde 💛");
-        return;
+        showToast("Bu ürün zaten favorilerinizde 💛");
+      } else if (!res.ok) {
+        throw new Error("Favori eklenemedi");
+      } else {
+        showToast("Ürün favorilere eklendi 💛");
       }
-      if (!res.ok) throw new Error("Favori eklenemedi");
-      showToast("Ürün favorilere eklendi 💛");
     })
     .catch(() => {
       showToast("Favori eklenemedi.");
