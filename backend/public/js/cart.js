@@ -112,11 +112,28 @@ function attachQuantityListeners() {
       const itemEl = this.closest(".cart-item");
       const qtySpan = itemEl.querySelector(".product-qty");
       const productId = itemEl.querySelector(".delete-btn").dataset.id;
+
       if (!productId) {
         showToast("Ürün ID'si alınamadı.");
         return;
       }
 
+      // 1️⃣ Mevcut miktarı çek
+      let currentQty = parseInt(qtySpan.textContent);
+
+      // 2️⃣ Önce gösterimi anında güncelle (Optimistic UI)
+      let newQty = currentQty + (isIncrease ? 1 : -1);
+
+      // Eğer azaltma sonucu 0 veya daha azsa hemen kaldır
+      if (newQty <= 0) {
+        itemEl.remove();
+      } else {
+        qtySpan.textContent = newQty;
+      }
+
+      recalculateTotalPrice();
+
+      // 3️⃣ Sunucuya güncelleme isteği gönder
       const res = await fetch(`${baseURL}/api/cart/update-quantity`, {
         method: "PUT",
         credentials: "include",
@@ -124,26 +141,26 @@ function attachQuantityListeners() {
         body: JSON.stringify({ productId, change: isIncrease ? 1 : -1 }),
       });
 
+      // 4️⃣ Sunucu hatası varsa, gösterimi geri al
       if (!res.ok) {
         showToast("Miktar güncellenemedi.");
+
+        // Geri al: eğer kaldırdıysan yeniden ekleyemezsin, sayfayı reload ettir
+        if (newQty <= 0) {
+          renderCartItems();
+        } else {
+          qtySpan.textContent = currentQty;
+          recalculateTotalPrice();
+        }
+
         return;
       }
 
-      let currentQty = parseInt(qtySpan.textContent);
-      currentQty += isIncrease ? 1 : -1;
-
-      if (currentQty <= 0) {
-        itemEl.remove();
-      }
-
+      // 5️⃣ Her şey yolundaysa: Eğer son ürünse boş sepeti tetikle
       const remainingItems = document.querySelectorAll(".cart-item").length;
       if (remainingItems === 0) {
-        renderCartItems([]); // 🛒 Boş sepet görünümünü tetikle
-      } else {
-        qtySpan.textContent = currentQty;
+        renderCartItems([]); //
       }
-
-      recalculateTotalPrice();
     });
   });
 }
