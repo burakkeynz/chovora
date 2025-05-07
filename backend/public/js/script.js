@@ -20,6 +20,8 @@ export async function checkAuth() {
   } catch (err) {
     console.warn("check-auth error:", err);
     setLoginState(false);
+  } finally {
+    updateLoginUI();
   }
 }
 
@@ -84,7 +86,6 @@ window.addToFavorites = addToFavorites;
 // DOM yüklenince
 document.addEventListener("DOMContentLoaded", async () => {
   await checkAuth();
-  updateLoginUI();
 
   // Giriş/çıkış işlemleri
   document
