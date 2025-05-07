@@ -3,7 +3,7 @@ const router = express.Router();
 const Cart = require("../models/Cart");
 const verifyToken = require("../middleware/verifyToken"); // JWT middleware'i ekle
 
-// 🟢 1. Sepeti getir (GET /api/cart)
+// 1. Sepeti getir (GET /api/cart)
 router.get("/cart", verifyToken, async (req, res) => {
   const userId = req.user.userId;
 
@@ -16,7 +16,7 @@ router.get("/cart", verifyToken, async (req, res) => {
   }
 });
 
-// 🟢 2. Sepete ürün ekle (POST /api/cart)
+// 2. Sepete ürün ekle (POST /api/cart)
 router.post("/cart", verifyToken, async (req, res) => {
   const userId = req.user.userId;
   const { product } = req.body;
@@ -39,7 +39,7 @@ router.post("/cart", verifyToken, async (req, res) => {
   }
 });
 
-// 🟢 3. Sepetten ürün sil (DELETE /api/cart/:id)
+// 3. Sepetten ürün sil (DELETE /api/cart/:id)
 router.delete("/cart/:id", verifyToken, async (req, res) => {
   const userId = req.user.userId;
 
@@ -52,7 +52,7 @@ router.delete("/cart/:id", verifyToken, async (req, res) => {
   }
 });
 
-router.put("api/cart/update-quantity", verifyToken, async (req, res) => {
+router.put("/api/cart/update-quantity", verifyToken, async (req, res) => {
   const { productId, change } = req.body;
   const userId = req.user.userId;
 
@@ -77,5 +77,9 @@ router.put("api/cart/update-quantity", verifyToken, async (req, res) => {
     res.status(500).json({ message: "Sunucu hatası." });
   }
 });
+
+//4.Eklenmiş bir ürün varsa ona uygun popup
+const existing = await Favourite.findOne({ userId: req.user.id, productId });
+if (existing) return res.status(409).json({ message: "Zaten favoride." });
 
 module.exports = router;
