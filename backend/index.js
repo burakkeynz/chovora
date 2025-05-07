@@ -29,7 +29,7 @@ app.use(
       if (!origin || allowedOrigins.includes(origin.replace(/\/$/, ""))) {
         callback(null, true);
       } else {
-        console.error("⛔️ CORS BLOCKED ORIGIN:", origin);
+        console.error("CORS BLOCKED ORIGIN:", origin);
         callback(new Error("Not allowed by CORS"));
       }
     },
