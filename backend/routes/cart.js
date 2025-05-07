@@ -78,8 +78,4 @@ router.put("/api/cart/update-quantity", verifyToken, async (req, res) => {
   }
 });
 
-//4.Eklenmiş bir ürün varsa ona uygun popup
-const existing = await Favourite.findOne({ userId: req.user.id, productId });
-if (existing) return res.status(409).json({ message: "Zaten favoride." });
-
 module.exports = router;

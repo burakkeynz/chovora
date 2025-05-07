@@ -24,15 +24,17 @@ router.post("/favourites", verifyToken, async (req, res) => {
       productId,
     });
 
-    if (!exists) {
-      const newFav = new Favourite({
-        userId: req.user.userId,
-        productId,
-      });
-      await newFav.save();
+    if (exists) {
+      return res.status(409).json({ message: "Zaten favorilerde." });
     }
 
-    res.status(200).json({ message: "Favorilere eklendi." });
+    const newFav = new Favourite({
+      userId: req.user.userId,
+      productId,
+    });
+    await newFav.save();
+
+    res.status(201).json({ message: "Favorilere eklendi." });
   } catch (err) {
     res.status(500).json({ error: "Favori eklenemedi." });
   }
