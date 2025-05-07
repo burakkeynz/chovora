@@ -52,6 +52,11 @@ router.delete("/:id", verifyToken, async (req, res) => {
   }
 });
 
+//Test için geçiçi olarak eklendi
+router.put("/update-quantity-test", (req, res) => {
+  res.send("update-quantity WORKING ✅");
+});
+
 router.put("/update-quantity", verifyToken, async (req, res) => {
   const { productId, change } = req.body;
   const userId = req.user.userId;
