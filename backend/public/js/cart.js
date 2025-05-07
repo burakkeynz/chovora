@@ -24,11 +24,24 @@ document.addEventListener("DOMContentLoaded", () => {
         "<p style='text-align:center'>Sepeti görüntülemek için giriş yapmalısınız.</p>";
     });
 });
-
 function renderCartItems(items) {
   const container = document.getElementById("cart-items");
-  container.innerHTML = "";
 
+  // 🛑 EMPTY CART kontrolü eklendi
+  if (!items || items.length === 0) {
+    container.innerHTML = `
+      <div class="empty-cart">
+        <img src="/images/empty-cart.png" alt="Empty cart" />
+        <h3>Empty cart</h3>
+        <p>Your shopping cart is empty.</p>
+      </div>
+    `;
+    document.getElementById("cart-summary").style.display = "none"; // toplam fiyat vs. gizle
+    return;
+  }
+
+  // 🔁 Doluysa ürünleri listele
+  container.innerHTML = "";
   items.forEach((item) => {
     const div = document.createElement("div");
     div.className = "cart-item";
@@ -115,15 +128,14 @@ function attachQuantityListeners() {
 
       if (currentQty <= 0) {
         itemEl.remove();
-      } else {
-        qtySpan.textContent = currentQty;
       }
 
       const remainingItems = document.querySelectorAll(".cart-item").length;
-      document.getElementById("empty-cart").style.display =
-        remainingItems === 0 ? "block" : "none";
-      document.getElementById("cart-summary").style.display =
-        remainingItems === 0 ? "none" : "block";
+      if (remainingItems === 0) {
+        renderCartItems([]); // 🛒 Boş sepet görünümünü tetikle
+      } else {
+        qtySpan.textContent = currentQty;
+      }
 
       recalculateTotalPrice();
     });

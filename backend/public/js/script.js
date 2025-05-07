@@ -183,7 +183,15 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 
   document.getElementById("login-link")?.addEventListener("click", () => {
-    window.location.href = "login.html";
+    const reason = localStorage.getItem("loginReason");
+
+    if (reason === "cartAccess") {
+      window.location.href = "login.html?from=cart";
+    } else if (reason === "favoritesAccess") {
+      window.location.href = "login.html?from=favorites";
+    } else {
+      window.location.href = "login.html";
+    }
   });
 
   const searchInput = document.getElementById("search-input");
