@@ -8,7 +8,8 @@ router.get("/", verifyToken, async (req, res) => {
   const userId = req.user.userId;
 
   try {
-    const cartItems = await Cart.find({ userId });
+    const cartItem = await Cart.findOne({ userId, productId });
+
     res.status(200).json({ cart: cartItems });
   } catch (err) {
     console.error("Sepet getirme hatası:", err);
@@ -16,10 +17,10 @@ router.get("/", verifyToken, async (req, res) => {
   }
 });
 
-//Test için geçiçi eklendi
-router.put("/update-quantity-test", (req, res) => {
-  res.send("update-quantity WORKING ✅");
-});
+// //Test için geçiçi eklendi
+// router.put("/update-quantity-test", (req, res) => {
+//   res.send("update-quantity çalışıyor ");
+// });
 
 // 2. Sepete ürün ekle (POST /api/cart)
 router.post("/", verifyToken, async (req, res) => {
@@ -64,22 +65,24 @@ router.put("/update-quantity", verifyToken, async (req, res) => {
   try {
     const cartItem = await Cart.findOne({ userId, productId });
 
+    // 404 yerine  quantity 0 dön (optimistic UI ile uyumlu hale getirme)
     if (!cartItem) {
-      return res.status(404).json({ message: "Ürün bulunamadı." });
+      console.warn("Ürün zaten silinmiş, tekrar güncellenemedi:", {
+        userId,
+        productId,
+      });
+      return res.status(200).json({ quantity: 0 });
     }
 
     cartItem.quantity += change;
 
     if (cartItem.quantity <= 0) {
       await cartItem.deleteOne();
+      return res.status(200).json({ quantity: 0 });
     } else {
       await cartItem.save();
+      return res.status(200).json({ quantity: cartItem.quantity }); //Sync
     }
-
-    res.status(200).json({
-      message: "Quantity güncellendi.",
-      quantity: cartItem.quantity,
-    });
   } catch (err) {
     console.error("Quantity update hatası:", err);
     res.status(500).json({ message: "Sunucu hatası." });
