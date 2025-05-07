@@ -52,8 +52,7 @@ router.delete("/cart/:id", verifyToken, async (req, res) => {
   }
 });
 
-// 🟢 4. Quantity güncelle (PUT /api/cart/update-quantity)
-router.put("/cart/update-quantity", verifyToken, async (req, res) => {
+router.put("api/cart/update-quantity", verifyToken, async (req, res) => {
   const { productId, change } = req.body;
   const userId = req.user.userId;
 
