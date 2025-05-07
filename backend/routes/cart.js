@@ -8,7 +8,7 @@ router.get("/", verifyToken, async (req, res) => {
   const userId = req.user.userId;
 
   try {
-    const cartItem = await Cart.find({ userId });
+    const cartItems = await Cart.find({ userId });
 
     res.status(200).json({ cart: cartItems });
   } catch (err) {
@@ -63,7 +63,7 @@ router.put("/update-quantity", verifyToken, async (req, res) => {
   const userId = req.user.userId;
 
   try {
-    const cartItem = await Cart.find({ userId });
+    const cartItem = await Cart.findOne({ userId, productId });
 
     // 404 yerine  quantity 0 dön (optimistic UI ile uyumlu hale getirme)
     if (!cartItem) {
