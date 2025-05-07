@@ -42,7 +42,7 @@ app.use(express.json());
 
 // Rotalar
 app.use("/api/auth", authRoutes);
-app.use("/api", cartRoutes);
+app.use("/api/cart", cartRoutes);
 app.use("/api", favouriteRoutes);
 
 //  Statik dosyalar
