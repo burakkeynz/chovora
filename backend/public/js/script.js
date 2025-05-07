@@ -76,6 +76,10 @@ function addToFavorites(productId) {
     body: JSON.stringify({ productId }),
   })
     .then((res) => {
+      if (res.status === 409) {
+        showToast("Bu ürün zaten favorilerde 💛");
+        return;
+      }
       if (!res.ok) throw new Error("Favori eklenemedi");
       showToast("Ürün favorilere eklendi 💛");
     })
