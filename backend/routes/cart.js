@@ -76,7 +76,10 @@ router.put("/update-quantity", verifyToken, async (req, res) => {
       await cartItem.save();
     }
 
-    res.status(200).json({ message: "Quantity güncellendi." });
+    res.status(200).json({
+      message: "Quantity güncellendi.",
+      quantity: cartItem.quantity,
+    });
   } catch (err) {
     console.error("Quantity update hatası:", err);
     res.status(500).json({ message: "Sunucu hatası." });
