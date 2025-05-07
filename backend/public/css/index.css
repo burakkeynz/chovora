@@ -200,13 +200,13 @@ main {
 }
 .login-toggle {
   opacity: 0;
-  display: none;
+  pointer-events: none;
   transition: opacity 0.3s ease-in-out;
 }
 
 .login-toggle.visible {
-  display: flex !important;
   opacity: 1;
+  pointer-events: auto;
 }
 
 .login-container button {
