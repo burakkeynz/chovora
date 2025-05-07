@@ -32,11 +32,15 @@ export function updateLoginUI() {
   const logoutBtn = document.getElementById("logout-link");
 
   if (getLoginState()) {
-    if (loginBtn) loginBtn.classList.add("hidden");
-    if (logoutBtn) logoutBtn.classList.remove("hidden");
+    loginBtn?.classList.add("hidden");
+    loginBtn?.classList.remove("visible");
+    logoutBtn?.classList.remove("hidden");
+    logoutBtn?.classList.add("visible");
   } else {
-    if (logoutBtn) logoutBtn.classList.add("hidden");
-    if (loginBtn) loginBtn.classList.remove("hidden");
+    logoutBtn?.classList.add("hidden");
+    logoutBtn?.classList.remove("visible");
+    loginBtn?.classList.remove("hidden");
+    loginBtn?.classList.add("visible");
   }
 }
 
