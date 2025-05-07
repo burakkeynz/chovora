@@ -4,7 +4,7 @@ const Cart = require("../models/Cart");
 const verifyToken = require("../middleware/verifyToken"); // JWT middleware'i ekle
 
 // 1. Sepeti getir (GET /api/cart)
-router.get("/cart", verifyToken, async (req, res) => {
+router.get("/", verifyToken, async (req, res) => {
   const userId = req.user.userId;
 
   try {
@@ -17,7 +17,7 @@ router.get("/cart", verifyToken, async (req, res) => {
 });
 
 // 2. Sepete ürün ekle (POST /api/cart)
-router.post("/cart", verifyToken, async (req, res) => {
+router.post("/", verifyToken, async (req, res) => {
   const userId = req.user.userId;
   const { product } = req.body;
 
@@ -40,7 +40,7 @@ router.post("/cart", verifyToken, async (req, res) => {
 });
 
 // 3. Sepetten ürün sil (DELETE /api/cart/:id)
-router.delete("/cart/:id", verifyToken, async (req, res) => {
+router.delete("/:id", verifyToken, async (req, res) => {
   const userId = req.user.userId;
 
   try {
