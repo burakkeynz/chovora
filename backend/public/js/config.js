@@ -1,4 +1,1 @@
-export const baseURL =
-  window.location.hostname === "localhost"
-    ? "http://localhost:3000"
-    : "https://chovora-backend.onrender.com";
+export const baseURL = "https://api.chovora.com";
