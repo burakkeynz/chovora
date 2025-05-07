@@ -8,7 +8,7 @@ router.get("/", verifyToken, async (req, res) => {
   const userId = req.user.userId;
 
   try {
-    const cartItem = await Cart.findOne({ userId, productId });
+    const cartItem = await Cart.findOne({ userId });
 
     res.status(200).json({ cart: cartItems });
   } catch (err) {
