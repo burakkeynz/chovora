@@ -4,6 +4,14 @@ import { getLoginState, setLoginState } from "./script.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const infoBox = document.getElementById("login-info-msg");
+
+  //Direkt giriş yap butonuna basıp girebilmek için
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.has("direct")) {
+    localStorage.removeItem("redirectAfterLogin");
+    localStorage.removeItem("loginReason");
+  }
+
   const redirectPage = localStorage.getItem("redirectAfterLogin");
   const loginReason = localStorage.getItem("loginReason");
 
@@ -22,6 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
     infoBox.style.display = "block";
   }
 
+  // Login form işlemleri gereken typeda
   const form = document.getElementById("login-form");
 
   form.addEventListener("submit", async function (e) {
@@ -46,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const data = await res.json();
 
       if (res.ok) {
-        localStorage.setItem("token", data.token); // ⭐ EKLE BUNU ⭐
+        localStorage.setItem("token", data.token);
         await syncLocalCartToBackend();
 
         const redirect = localStorage.getItem("redirectAfterLogin");

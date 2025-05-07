@@ -95,25 +95,40 @@ window.addToFavorites = addToFavorites;
 document.addEventListener("DOMContentLoaded", async () => {
   await checkAuth();
 
-  // Giriş/çıkış işlemleri
+  // Giriş/çıkış işlemleri ( burayı değiştiriyorum duruma göre geri alıcam)
   document
     .getElementById("logout-link")
     ?.addEventListener("click", async (e) => {
       e.preventDefault();
-      await fetch(`${baseURL}/api/auth/logout`, {
-        method: "GET",
-        credentials: "include",
-      });
+
+      try {
+        await fetch(`${baseURL}/api/auth/logout`, {
+          method: "GET", // Eğer POST destekleniyorsa POST daha güvenli olur
+          credentials: "include",
+        });
+      } catch (err) {
+        console.warn("Logout API çağrısı başarısız olabilir:", err);
+      }
+
+      // 🧹 Tüm oturum verilerini temizle
       localStorage.removeItem("token");
-      window.location.href = "logout.html";
+      localStorage.removeItem("loginReason");
+      localStorage.removeItem("redirectAfterLogin");
+
+      setLoginState(false); // 🍪 Cookie durumu da senkronize edilir
+      updateLoginUI(); // 🔁 UI güncellenir
+
+      window.location.href = "logout.html"; // ✅ Güle güle ekranı
     });
 
+  /*Direktman login yapmaya basıldıgı için eğer 
+     bunun öncesinde favorilere tıklayıp logine yönlendirildiyse 
+     (veya sepeti görüntüle) basitçe buradan direkt sade login sayfasına gider
+    */
   document.getElementById("login-link")?.addEventListener("click", () => {
-    const reason = localStorage.getItem("loginReason");
-    if (reason === "cartAccess") window.location.href = "login.html?from=cart";
-    else if (reason === "favoritesAccess")
-      window.location.href = "login.html?from=favorites";
-    else window.location.href = "login.html";
+    localStorage.removeItem("redirectAfterLogin");
+    localStorage.removeItem("loginReason");
+    window.location.href = "login.html?direct=1";
   });
 
   // Kart tıklamaları
