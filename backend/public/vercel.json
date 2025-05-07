@@ -1,0 +1,17 @@
+{
+  "rewrites": [
+    { "source": "/chovora-hakkimizda", "destination": "/about.html" },
+    { "source": "/chovora-iletisim", "destination": "/contact.html" },
+    { "source": "/chovora-favoriler", "destination": "/favourites.html" },
+    { "source": "/chovora-giris", "destination": "/login.html" },
+    { "source": "/chovora-cikis", "destination": "/logout.html" },
+    { "source": "/chovora-sepet", "destination": "/cart.html" },
+    { "source": "/chovora-urunler", "destination": "/products.html" },
+    { "source": "/chovora-urun/:id", "destination": "/product-single.html" },
+    { "source": "/chovora-kayit", "destination": "/register.html" },
+    { "source": "/chovora-tesekkurler", "destination": "/thanks.html" },
+    { "source": "/chovora-onikili-kutu", "destination": "/product-box.html" },
+    { "source": "/chovora-arama-sonuclari", "destination": "/search.html" },
+    { "source": "/", "destination": "/index.html" }
+  ]
+}
