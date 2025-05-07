@@ -17,6 +17,7 @@ export async function checkAuth() {
       credentials: "include",
     });
     setLoginState(res.ok);
+    console.log("Login durumu:", res.ok, "Origin:", window.location.origin);
   } catch (err) {
     console.warn("check-auth error:", err);
     setLoginState(false);
@@ -29,13 +30,8 @@ export async function checkAuth() {
 export function updateLoginUI() {
   const loginBtn = document.getElementById("login-link");
   const logoutBtn = document.getElementById("logout-link");
-  if (getLoginState()) {
-    if (loginBtn) loginBtn.classList.add("hidden");
-    if (logoutBtn) logoutBtn.classList.remove("hidden");
-  } else {
-    if (logoutBtn) logoutBtn.classList.add("hidden");
-    if (loginBtn) loginBtn.classList.remove("hidden");
-  }
+
+  if (!loginBtn || !logoutBtn) return;
 
   if (getLoginState()) {
     loginBtn.classList.add("hidden");
