@@ -57,9 +57,9 @@ function renderCartItems(items) {
         <div class="cart-item-top">
           <span class="cart-item-name">${item.name}</span>
           <span class="cart-item-price">₺${item.price.toFixed(2)}</span>
-          <button class="delete-btn" data-id="${
-            item.productId
-          }" data-product-id="${item.productId}">Sil</button>
+          <button class="delete-btn" data-id="${item._id}" data-product-id="${
+      item.productId
+    }">Sil</button>
         </div>
         <div class="cart-item-bottom">
           <span>Miktar:</span>
