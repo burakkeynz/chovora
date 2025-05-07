@@ -63,7 +63,7 @@ router.put("/update-quantity", verifyToken, async (req, res) => {
   const userId = req.user.userId;
 
   try {
-    const cartItem = await Cart.findOne({ userId, productId });
+    const cartItem = await Cart.findOne({ userId });
 
     // 404 yerine  quantity 0 dön (optimistic UI ile uyumlu hale getirme)
     if (!cartItem) {
