@@ -113,7 +113,7 @@ function attachQuantityListeners() {
       const isIncrease = this.classList.contains("increase");
       const itemEl = this.closest(".cart-item");
       const qtySpan = itemEl.querySelector(".product-qty");
-      const productId = itemEl.querySelector(".delete-btn").dataset.id;
+      const productId = itemEl.querySelector(".delete-btn").dataset.productId;
 
       if (!productId) {
         showToast("Ürün ID'si alınamadı.");
