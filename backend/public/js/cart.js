@@ -30,7 +30,7 @@ function renderCartItems(items) {
   // 🛑 EMPTY CART kontrolü eklendi
   if (!items || items.length === 0) {
     container.innerHTML = `
-      <div class="empty-cart">
+      <div id="empty-cart">
         <img src="/images/empty-cart.png" alt="Empty cart" />
         <h3>Empty cart</h3>
         <p>Your shopping cart is empty.</p>
