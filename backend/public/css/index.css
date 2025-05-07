@@ -201,7 +201,7 @@ main {
 .login-toggle {
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.3s ease-in-out;
+  transition: opacity 0.15s ease-in-out;
 }
 
 .login-toggle.visible {
