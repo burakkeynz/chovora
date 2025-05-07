@@ -16,6 +16,11 @@ router.get("/", verifyToken, async (req, res) => {
   }
 });
 
+//Test için geçiçi eklendi
+router.put("/update-quantity-test", (req, res) => {
+  res.send("update-quantity WORKING ✅");
+});
+
 // 2. Sepete ürün ekle (POST /api/cart)
 router.post("/", verifyToken, async (req, res) => {
   const userId = req.user.userId;
@@ -50,11 +55,6 @@ router.delete("/:id", verifyToken, async (req, res) => {
     console.error("Silme hatası:", err);
     res.status(500).json({ message: "Sunucu hatası." });
   }
-});
-
-//Test için geçiçi olarak eklendi
-router.put("/update-quantity-test", (req, res) => {
-  res.send("update-quantity WORKING ✅");
 });
 
 router.put("/update-quantity", verifyToken, async (req, res) => {
