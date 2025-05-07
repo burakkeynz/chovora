@@ -34,7 +34,7 @@ document
       if (res.ok) {
         const messageBox = document.createElement("div");
         messageBox.textContent =
-          "✅ Kayıt başarılı! Giriş sayfasına yönlendiriliyorsunuz...";
+          "Kayıt başarılı ✅ Giriş sayfasına yönlendiriliyorsunuz.";
         messageBox.style.backgroundColor = "#d4edda";
         messageBox.style.color = "#155724";
         messageBox.style.padding = "12px";

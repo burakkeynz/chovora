@@ -87,7 +87,7 @@ function removeFromFavorites(productId) {
       const cardToRemove = document.querySelector(`[data-id="${productId}"]`);
       if (cardToRemove) {
         cardToRemove.remove();
-        showToast("Ürün favorilerden çıkarıldı ❌");
+        showToast("Ürün favorilerden çıkarıldı.");
       }
 
       const container = document.getElementById("favorites-container");

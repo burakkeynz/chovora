@@ -77,11 +77,11 @@ function addToFavorites(productId) {
   })
     .then(async (res) => {
       if (res.status === 409) {
-        showToast("Bu ürün zaten favorilerinizde 💛");
+        showToast("Bu ürün zaten favorilerinizde.");
       } else if (!res.ok) {
         throw new Error("Favori eklenemedi");
       } else {
-        showToast("Ürün favorilere eklendi 💛");
+        showToast("Ürün favorilere eklendi.");
       }
     })
     .catch(() => {
