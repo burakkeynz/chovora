@@ -16,6 +16,7 @@ const FRONTEND_URL = process.env.FRONTEND_URL;
 
 connectDB();
 const allowedOrigins = [
+  "http://localhost:3000",
   "http://localhost:5173",
   FRONTEND_URL,
   "https://chovora.vercel.app",
