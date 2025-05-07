@@ -92,17 +92,6 @@ app.post("/api/contact", async (req, res) => {
   }
 });
 
-app.options("/*", (req, res) => {
-  res.setHeader("Access-Control-Allow-Origin", req.headers.origin || "*");
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET, POST, PUT, DELETE, OPTIONS"
-  );
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-  res.setHeader("Access-Control-Allow-Credentials", "true");
-  res.sendStatus(200);
-});
-
 // Ana sayfa
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
