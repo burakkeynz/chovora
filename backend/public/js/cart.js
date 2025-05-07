@@ -112,6 +112,10 @@ function attachQuantityListeners() {
       const itemEl = this.closest(".cart-item");
       const qtySpan = itemEl.querySelector(".product-qty");
       const productId = itemEl.querySelector(".delete-btn").dataset.id;
+      if (!productId) {
+        showToast("Ürün ID'si alınamadı.");
+        return;
+      }
 
       const res = await fetch(`${baseURL}/api/cart/update-quantity`, {
         method: "PUT",
