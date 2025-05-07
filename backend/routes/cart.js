@@ -52,7 +52,7 @@ router.delete("/cart/:id", verifyToken, async (req, res) => {
   }
 });
 
-router.put("/api/cart/update-quantity", verifyToken, async (req, res) => {
+router.put("/update-quantity", verifyToken, async (req, res) => {
   const { productId, change } = req.body;
   const userId = req.user.userId;
 
