@@ -26,9 +26,10 @@ const allowedOrigins = [
 app.use(
   cors({
     origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
+      if (!origin || allowedOrigins.includes(origin.replace(/\/$/, ""))) {
         callback(null, true);
       } else {
+        console.error("⛔️ CORS BLOCKED ORIGIN:", origin);
         callback(new Error("Not allowed by CORS"));
       }
     },

@@ -29,8 +29,13 @@ export async function checkAuth() {
 export function updateLoginUI() {
   const loginBtn = document.getElementById("login-link");
   const logoutBtn = document.getElementById("logout-link");
-
-  if (!loginBtn || !logoutBtn) return;
+  if (getLoginState()) {
+    if (loginBtn) loginBtn.classList.add("hidden");
+    if (logoutBtn) logoutBtn.classList.remove("hidden");
+  } else {
+    if (logoutBtn) logoutBtn.classList.add("hidden");
+    if (loginBtn) loginBtn.classList.remove("hidden");
+  }
 
   if (getLoginState()) {
     loginBtn.classList.add("hidden");
