@@ -10,7 +10,7 @@ export function getLoginState() {
   return isUserLoggedIn;
 }
 
-// Sadece login durumunu kontrol eder
+// Auth kontrolü
 export async function checkAuth() {
   try {
     const res = await fetch(`${baseURL}/api/auth/check-auth`, {
@@ -22,31 +22,20 @@ export async function checkAuth() {
     setLoginState(false);
   }
 }
-function showElementSmoothly(idToShow, idToHide) {
-  const elShow = document.getElementById(idToShow);
-  const elHide = document.getElementById(idToHide);
 
-  if (elHide) {
-    elHide.classList.remove("visible");
-    setTimeout(() => {
-      elHide.style.display = "none";
-    }, 300);
-  }
-
-  if (elShow) {
-    elShow.style.display = "flex"; // flex'i hemen veririz
-    setTimeout(() => {
-      elShow.classList.add("visible"); // ardından opacity geçişi başlar
-    }, 10); // 10ms yeterli
-  }
-}
-
-// Login ve logout butonlarını göster/gizle
+// Giriş-çıkış butonlarını güncelle
 export function updateLoginUI() {
+  const loginBtn = document.getElementById("login-link");
+  const logoutBtn = document.getElementById("logout-link");
+
+  if (!loginBtn || !logoutBtn) return;
+
   if (getLoginState()) {
-    showElementSmoothly("logout-link", "login-link");
+    loginBtn.classList.add("hidden");
+    logoutBtn.classList.remove("hidden");
   } else {
-    showElementSmoothly("login-link", "logout-link");
+    logoutBtn.classList.add("hidden");
+    loginBtn.classList.remove("hidden");
   }
 }
 
@@ -66,11 +55,11 @@ export function showToast(message) {
   setTimeout(() => toast.remove(), 3500);
 }
 
-// Favorilere ekleme işlemi
+// Favorilere ekle
 function addToFavorites(productId) {
   if (!productId) return;
 
-  if (!isUserLoggedIn) {
+  if (!getLoginState()) {
     showToast("Favorilere eklemek için giriş yapmalısınız.");
     return;
   }
@@ -92,10 +81,12 @@ function addToFavorites(productId) {
 
 window.addToFavorites = addToFavorites;
 
+// DOM yüklenince
 document.addEventListener("DOMContentLoaded", async () => {
   await checkAuth();
   updateLoginUI();
 
+  // Giriş/çıkış işlemleri
   document
     .getElementById("logout-link")
     ?.addEventListener("click", async (e) => {
@@ -104,9 +95,19 @@ document.addEventListener("DOMContentLoaded", async () => {
         method: "GET",
         credentials: "include",
       });
+      localStorage.removeItem("token");
       window.location.href = "logout.html";
     });
 
+  document.getElementById("login-link")?.addEventListener("click", () => {
+    const reason = localStorage.getItem("loginReason");
+    if (reason === "cartAccess") window.location.href = "login.html?from=cart";
+    else if (reason === "favoritesAccess")
+      window.location.href = "login.html?from=favorites";
+    else window.location.href = "login.html";
+  });
+
+  // Kart tıklamaları
   document.querySelectorAll(".product-card").forEach((card) => {
     card.addEventListener("click", function (e) {
       if (e.target.closest(".buy-btn") || e.target.closest(".fav-btn")) return;
@@ -116,6 +117,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   });
 
+  // Sepete ekle
   document.querySelectorAll(".buy-btn").forEach((btn) => {
     btn.addEventListener("click", () => {
       const card = btn.closest(".product-card");
@@ -152,6 +154,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   });
 
+  // Favori tıklamaları
   document.querySelectorAll(".fav-btn").forEach((btn) => {
     btn.addEventListener("click", function () {
       const productId = this.closest(".product-card").getAttribute("data-id");
@@ -159,12 +162,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   });
 
+  // Sepet ve favori yönlendirmeleri
   document.getElementById("cart-link")?.addEventListener("click", () => {
     const localCart = JSON.parse(localStorage.getItem("cart")) || [];
     if (getLoginState() || localCart.length > 0) {
       window.location.href = "cart.html";
     } else {
-      localStorage.removeItem("loginReason");
       localStorage.setItem("redirectAfterLogin", "cart.html");
       localStorage.setItem("loginReason", "cartAccess");
       window.location.href = "login.html";
@@ -175,25 +178,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (getLoginState()) {
       window.location.href = "favourites.html";
     } else {
-      localStorage.removeItem("loginReason");
       localStorage.setItem("redirectAfterLogin", "favourites.html");
       localStorage.setItem("loginReason", "favoritesAccess");
       window.location.href = "login.html";
     }
   });
 
-  document.getElementById("login-link")?.addEventListener("click", () => {
-    const reason = localStorage.getItem("loginReason");
-
-    if (reason === "cartAccess") {
-      window.location.href = "login.html?from=cart";
-    } else if (reason === "favoritesAccess") {
-      window.location.href = "login.html?from=favorites";
-    } else {
-      window.location.href = "login.html";
-    }
-  });
-
+  // Arama önerileri
   const searchInput = document.getElementById("search-input");
   const suggestionsBox = document.getElementById("suggestions");
   const products = [
@@ -226,13 +217,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
   });
 
-  document
-    .querySelector(".search-bar button")
-    ?.addEventListener("click", () => {
-      const q = searchInput.value.trim();
-      if (q) window.location.href = `search.html?q=${encodeURIComponent(q)}`;
-    });
-
   searchInput?.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
@@ -240,4 +224,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (q) window.location.href = `search.html?q=${encodeURIComponent(q)}`;
     }
   });
+
+  document
+    .querySelector(".search-bar button")
+    ?.addEventListener("click", () => {
+      const q = searchInput.value.trim();
+      if (q) window.location.href = `search.html?q=${encodeURIComponent(q)}`;
+    });
 });
