@@ -4,9 +4,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const container = document.getElementById("cart-items");
   if (!container) return;
 
-  fetch(`${baseURL}/api/cart/update-quantity-test`, {
-    method: "PUT",
-  });
+  // fetch(`${baseURL}/api/cart/update-quantity-test`, {
+  //   method: "PUT",
+  // });
 
   fetch(`${baseURL}/api/cart`, {
     method: "GET",
