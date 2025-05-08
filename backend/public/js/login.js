@@ -5,7 +5,7 @@ import { getLoginState, setLoginState } from "./script.js";
 document.addEventListener("DOMContentLoaded", () => {
   const infoBox = document.getElementById("login-info-msg");
 
-  //Direkt giriş yap butonuna basıp girebilmek için
+  // Direkt giriş butonu → önceki yönlendirme bilgisini temizle
   const urlParams = new URLSearchParams(window.location.search);
   if (urlParams.has("direct")) {
     localStorage.removeItem("redirectAfterLogin");
@@ -16,11 +16,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const loginReason = localStorage.getItem("loginReason");
 
   if (infoBox && redirectPage && loginReason) {
-    if (redirectPage === "cart.html" && loginReason === "cartAccess") {
+    if (redirectPage === "/chovora-sepet" && loginReason === "cartAccess") {
       infoBox.textContent = "Lütfen sepetinizi görüntülemek için giriş yapın.";
       showToast("Sepetinizi görmek için önce giriş yapın.");
     } else if (
-      redirectPage === "favourites.html" &&
+      redirectPage === "/chovora-favoriler" &&
       loginReason === "favoritesAccess"
     ) {
       infoBox.textContent =
@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
     infoBox.style.display = "block";
   }
 
-  // Login form işlemleri gereken typeda
+  // Form submit işlemi
   const form = document.getElementById("login-form");
 
   form.addEventListener("submit", async function (e) {
@@ -59,8 +59,8 @@ document.addEventListener("DOMContentLoaded", () => {
         await syncLocalCartToBackend();
 
         const redirect = localStorage.getItem("redirectAfterLogin");
-        const loginReason = localStorage.getItem("loginReason");
 
+        // Temizle
         localStorage.removeItem("redirectAfterLogin");
         localStorage.removeItem("loginReason");
 
@@ -72,7 +72,7 @@ document.addEventListener("DOMContentLoaded", () => {
         } else {
           showToast("Giriş başarılı!");
           setTimeout(() => {
-            window.location.href = "index.html";
+            window.location.href = "/";
           }, 1000);
         }
       } else {

@@ -1,12 +1,9 @@
 import { baseURL } from "./config.js";
 import { showToast, updateLoginUI } from "./script.js";
+
 document.addEventListener("DOMContentLoaded", () => {
   const container = document.getElementById("cart-items");
   if (!container) return;
-
-  // fetch(`${baseURL}/api/cart/update-quantity-test`, {
-  //   method: "PUT",
-  // });
 
   fetch(`${baseURL}/api/cart`, {
     method: "GET",
@@ -16,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (res.status === 401) {
         localStorage.setItem("redirectAfterLogin", "cart.html");
         localStorage.setItem("loginReason", "cartAccess");
-        window.location.href = "login.html";
+        window.location.href = "/chovora-giris"; // vercele uygun hal
         return;
       }
 
@@ -28,10 +25,10 @@ document.addEventListener("DOMContentLoaded", () => {
         "<p style='text-align:center'>Sepeti görüntülemek için giriş yapmalısınız.</p>";
     });
 });
+
 function renderCartItems(items) {
   const container = document.getElementById("cart-items");
 
-  // 🛑 EMPTY CART kontrolü eklendi
   if (!items || items.length === 0) {
     container.innerHTML = `
       <div id="empty-cart">
@@ -40,11 +37,10 @@ function renderCartItems(items) {
         <p>Your shopping cart is empty.</p>
       </div>
     `;
-    document.getElementById("cart-summary").style.display = "none"; // toplam fiyat vs. gizle
+    document.getElementById("cart-summary").style.display = "none";
     return;
   }
 
-  // 🔁 Doluysa ürünleri listele
   container.innerHTML = "";
   items.forEach((item) => {
     const div = document.createElement("div");
@@ -120,7 +116,6 @@ function attachQuantityListeners() {
         return;
       }
 
-      // Optimistic UI ile anlık olarak gösteriyorum (delay oluyor öbür türlü)
       let currentQty = parseInt(qtySpan.textContent);
       let newQty = currentQty + (isIncrease ? 1 : -1);
       if (newQty <= 0) {
@@ -130,7 +125,6 @@ function attachQuantityListeners() {
       }
       recalculateTotalPrice();
 
-      //Gerçek güncellemeyi sunucuya gönderdiğim kısım
       try {
         const res = await fetch(`${baseURL}/api/cart/update-quantity`, {
           method: "PUT",
@@ -143,7 +137,6 @@ function attachQuantityListeners() {
 
         const data = await res.json();
 
-        // Backend’ten gelen değeri alıp senkron tutuyorum.
         if (data.quantity <= 0) {
           itemEl.remove();
         } else {
@@ -156,7 +149,6 @@ function attachQuantityListeners() {
         if (remainingItems === 0) renderCartItems([]);
       } catch (err) {
         showToast("Sunucu hatası: Güncelleme yapılamadı.");
-        // Hata varsa eski haline dönüştürme
         qtySpan.textContent = currentQty;
         recalculateTotalPrice();
       }

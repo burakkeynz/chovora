@@ -17,7 +17,6 @@ export async function checkAuth() {
       credentials: "include",
     });
     setLoginState(res.ok);
-    console.log("Login durumu:", res.ok, "Origin:", window.location.origin);
   } catch (err) {
     console.warn("check-auth error:", err);
     setLoginState(false);
@@ -33,14 +32,10 @@ export function updateLoginUI() {
 
   if (getLoginState()) {
     loginBtn?.classList.add("hidden");
-    loginBtn?.classList.remove("visible");
     logoutBtn?.classList.remove("hidden");
-    logoutBtn?.classList.add("visible");
   } else {
     logoutBtn?.classList.add("hidden");
-    logoutBtn?.classList.remove("visible");
     loginBtn?.classList.remove("hidden");
-    loginBtn?.classList.add("visible");
   }
 }
 
@@ -60,10 +55,8 @@ export function showToast(message) {
   setTimeout(() => toast.remove(), 3500);
 }
 
-// Favorilere ekle
 function addToFavorites(productId) {
   if (!productId) return;
-
   if (!getLoginState()) {
     showToast("Favorilere eklemek için giriş yapmalısınız.");
     return;
@@ -76,72 +69,57 @@ function addToFavorites(productId) {
     body: JSON.stringify({ productId }),
   })
     .then(async (res) => {
-      if (res.status === 409) {
-        showToast("Bu ürün zaten favorilerinizde.");
-      } else if (!res.ok) {
-        throw new Error("Favori eklenemedi");
-      } else {
-        showToast("Ürün favorilere eklendi.");
-      }
+      if (res.status === 409) showToast("Bu ürün zaten favorilerinizde.");
+      else if (!res.ok) throw new Error();
+      else showToast("Ürün favorilere eklendi.");
     })
-    .catch(() => {
-      showToast("Favori eklenemedi.");
-    });
+    .catch(() => showToast("Favori eklenemedi."));
 }
 
 window.addToFavorites = addToFavorites;
 
-// DOM yüklenince
 document.addEventListener("DOMContentLoaded", async () => {
   await checkAuth();
 
-  // Giriş/çıkış işlemleri ( burayı değiştiriyorum duruma göre geri alıcam)
+  // Logout işlemi
   document
     .getElementById("logout-link")
     ?.addEventListener("click", async (e) => {
       e.preventDefault();
-
       try {
         await fetch(`${baseURL}/api/auth/logout`, {
-          method: "GET", // Eğer POST destekleniyorsa POST daha güvenli olur
+          method: "GET",
           credentials: "include",
         });
       } catch (err) {
-        console.warn("Logout API çağrısı başarısız olabilir:", err);
+        console.warn("Logout başarısız:", err);
       }
 
-      // 🧹 Tüm oturum verilerini temizle
       localStorage.removeItem("token");
       localStorage.removeItem("loginReason");
       localStorage.removeItem("redirectAfterLogin");
 
-      setLoginState(false); // 🍪 Cookie durumu da senkronize edilir
-      updateLoginUI(); // 🔁 UI güncellenir
+      setLoginState(false);
+      updateLoginUI();
 
-      window.location.href = "logout.html"; // ✅ Güle güle ekranı
+      window.location.href = "/chovora-cikis";
     });
 
-  /*Direktman login yapmaya basıldıgı için eğer 
-     bunun öncesinde favorilere tıklayıp logine yönlendirildiyse 
-     (veya sepeti görüntüle) basitçe buradan direkt sade login sayfasına gider
-    */
   document.getElementById("login-link")?.addEventListener("click", () => {
     localStorage.removeItem("redirectAfterLogin");
     localStorage.removeItem("loginReason");
-    window.location.href = "login.html?direct=1";
+    window.location.href = "/chovora-giris?direct=1";
   });
 
-  // Kart tıklamaları
   document.querySelectorAll(".product-card").forEach((card) => {
     card.addEventListener("click", function (e) {
       if (e.target.closest(".buy-btn") || e.target.closest(".fav-btn")) return;
       const id = this.getAttribute("data-id");
       window.location.href =
-        id === "tekli" ? "product-single.html" : "product-box.html";
+        id === "tekli" ? "/chovora-urun/tekli" : "/chovora-onikili-kutu";
     });
   });
 
-  // Sepete ekle
   document.querySelectorAll(".buy-btn").forEach((btn) => {
     btn.addEventListener("click", () => {
       const card = btn.closest(".product-card");
@@ -178,7 +156,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   });
 
-  // Favori tıklamaları
   document.querySelectorAll(".fav-btn").forEach((btn) => {
     btn.addEventListener("click", function () {
       const productId = this.closest(".product-card").getAttribute("data-id");
@@ -186,43 +163,43 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   });
 
-  // Sepet ve favori yönlendirmeleri
   document.getElementById("cart-link")?.addEventListener("click", () => {
     const localCart = JSON.parse(localStorage.getItem("cart")) || [];
     if (getLoginState() || localCart.length > 0) {
-      window.location.href = "cart.html";
+      window.location.href = "/chovora-sepet";
     } else {
-      localStorage.setItem("redirectAfterLogin", "cart.html");
+      localStorage.setItem("redirectAfterLogin", "/chovora-sepet");
       localStorage.setItem("loginReason", "cartAccess");
-      window.location.href = "login.html";
+      window.location.href = "/chovora-giris";
     }
   });
 
   document.getElementById("favorites-link")?.addEventListener("click", () => {
     if (getLoginState()) {
-      window.location.href = "favourites.html";
+      window.location.href = "/chovora-favoriler";
     } else {
-      localStorage.setItem("redirectAfterLogin", "favourites.html");
+      localStorage.setItem("redirectAfterLogin", "/chovora-favoriler");
       localStorage.setItem("loginReason", "favoritesAccess");
-      window.location.href = "login.html";
+      window.location.href = "/chovora-giris";
     }
   });
 
-  // Arama önerileri
+  // Arama
   const searchInput = document.getElementById("search-input");
   const suggestionsBox = document.getElementById("suggestions");
+
   const products = [
     {
       id: "tekli",
       name: "Chovora Tekli Bar",
       image: "/images/packet.png",
-      link: "product-single.html",
+      link: "/chovora-urun/tekli",
     },
     {
       id: "12li",
       name: "Chovora Tanışma Paketi (12'li)",
       image: "/images/chovora-box.jpg",
-      link: "product-box.html",
+      link: "/chovora-onikili-kutu",
     },
   ];
 
@@ -245,7 +222,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (e.key === "Enter") {
       e.preventDefault();
       const q = searchInput.value.trim();
-      if (q) window.location.href = `search.html?q=${encodeURIComponent(q)}`;
+      if (q)
+        window.location.href = `/chovora-arama-sonuclari?q=${encodeURIComponent(
+          q
+        )}`;
     }
   });
 
@@ -253,6 +233,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     .querySelector(".search-bar button")
     ?.addEventListener("click", () => {
       const q = searchInput.value.trim();
-      if (q) window.location.href = `search.html?q=${encodeURIComponent(q)}`;
+      if (q)
+        window.location.href = `/chovora-arama-sonuclari?q=${encodeURIComponent(
+          q
+        )}`;
     });
 });

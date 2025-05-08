@@ -1,6 +1,4 @@
 // logout.js
-import { getLoginState, setLoginState } from "./script.js";
-
 document.addEventListener("DOMContentLoaded", () => {
   const loginLink = document.getElementById("login-link");
   const logoutLink = document.getElementById("logout-link");

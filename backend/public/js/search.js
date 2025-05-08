@@ -13,14 +13,14 @@ document.addEventListener("DOMContentLoaded", () => {
       name: "Chovora Tekli Bar",
       price: 38.9,
       image: "/images/packet.png",
-      link: "product-single.html",
+      link: "/chovora-urun/tekli", //
     },
     {
       id: "12li",
       name: "Chovora Tanışma Paketi (12'li)",
       price: 326.76,
       image: "/images/chovora-box.jpg",
-      link: "product-box.html",
+      link: "/chovora-onikili-kutu",
     },
   ];
 

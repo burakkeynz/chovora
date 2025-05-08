@@ -46,7 +46,7 @@ document
         document.querySelector("main").appendChild(messageBox);
 
         setTimeout(() => {
-          window.location.href = "login.html";
+          window.location.href = "/";
         }, 2000);
       } else {
         alert("Hata: " + data.error);

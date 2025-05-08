@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (res.status === 401) {
         localStorage.setItem("redirectAfterLogin", "favourites.html");
         localStorage.setItem("loginReason", "favoritesAccess");
-        window.location.href = "login.html";
+        window.location.href = "/chovora-giris"; // güncel
         return;
       }
 
@@ -31,13 +31,13 @@ document.addEventListener("DOMContentLoaded", () => {
           name: "Chovora Tekli Bar",
           price: 38.9,
           image: "/images/packet.png",
-          link: "/product-single.html",
+          link: "/chovora-urun/tekli", // güncelledim
         },
         "12li": {
           name: "Tanışma Paketi (12'li)",
           price: 326.76,
           image: "/images/chovora-box.jpg",
-          link: "/product-box.html",
+          link: "/chovora-onikili-kutu", // güncel
         },
       };
 
