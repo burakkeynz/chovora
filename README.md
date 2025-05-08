@@ -80,7 +80,7 @@ backend/
 **Burak Ege Kaya**  
 Computer Engineering & Management Engineering (Double Major) Student  
 Bahçeşehir University  
-[LinkedIn](https://www.linkedin.com/in/burakegekaya)
+[LinkedIn](https://www.linkedin.com/in/burak-ege-kaya/)
 
 ---
 
