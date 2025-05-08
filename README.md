@@ -47,7 +47,7 @@ A live deployment of the project — users can interact with the full experience
 
 ---
 
-##Project Structure
+## Project Structure
 
 ```bash
 backend/
@@ -72,7 +72,7 @@ backend/
 ```
 
 ---
-##Developer
+## Developer
 
 **Burak Ege Kaya**  
 Computer Engineering & Management Engineering (Double Major) Student
@@ -81,6 +81,6 @@ Bahçeşehir University
 
 ---
 
-##Note-License
+## Note-License
 
 Originally initiated as part of a university marketing course, all aspects of this project — from code and architecture to deployment — were fully designed and implemented for engineering and portfolio demonstration purposes. All rights are reserved.
