@@ -32,10 +32,16 @@ export function updateLoginUI() {
 
   if (getLoginState()) {
     loginBtn?.classList.add("hidden");
+    loginBtn?.classList.remove("visible");
+
     logoutBtn?.classList.remove("hidden");
+    logoutBtn?.classList.add("visible");
   } else {
     logoutBtn?.classList.add("hidden");
+    logoutBtn?.classList.remove("visible");
+
     loginBtn?.classList.remove("hidden");
+    loginBtn?.classList.add("visible");
   }
 }
 
