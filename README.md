@@ -1,10 +1,11 @@
 # Chovora – Full-Stack E-commerce Website
 
-**Chovora** is a fully functional e-commerce web application built entirely from scratch using HTML, CSS, vanilla JavaScript, Node.js, and MongoDB.  
+**Chovora** is a fully functional e-commerce web application built entirely from scratch using HTML, CSS, vanilla JavaScript, Node.js, and MongoDB. (For now it is functioing on computers, not mobile devices.  
 The website allows users to browse products, register/login securely, manage their cart and favorites, and enjoy a seamless user experience across all devices.
 
 This project was created as a practical demonstration of my full-stack development skills within my **Computer Engineering** program at Bahçeşehir University, as part of my **double major in Management Engineering**.
 
+> Currently optimized for desktop use. Some features may not function properly on mobile devices.
 > Built and deployed independently by **Burak Ege Kaya** — showcasing real-world web development capabilities, including authentication, RESTful APIs, dynamic UI handling, cloud-based deployment, and SMTP integration.
 
 ---
