@@ -33,8 +33,6 @@ function renderCartItems(items) {
     container.innerHTML = `
       <div id="empty-cart">
         <img src="/images/empty-cart.png" alt="Empty cart" />
-        <h3>Empty cart</h3>
-        <p>Your shopping cart is empty.</p>
       </div>
     `;
     document.getElementById("cart-summary").style.display = "none";
