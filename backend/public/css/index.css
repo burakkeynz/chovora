@@ -471,6 +471,10 @@ main {
   background-color: #f4e9d8; /* senin altın-bej uyumuna yakın bir ton */
 }
 
+.visible {
+  display: inline-block !important;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
