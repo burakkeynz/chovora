@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       if (response.ok) {
-        window.location.href = "/chovora/tesekkurler";
+        window.location.href = "/chovora-tesekkurler";
       } else {
         const errorData = await response.json();
         alert("Hata oluştu: " + (errorData.error || "Bilinmeyen hata"));
