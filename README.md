@@ -3,6 +3,13 @@
 **Chovora** is a fully functional e-commerce web application built entirely from scratch using HTML, CSS, vanilla JavaScript, Node.js, and MongoDB. (For now it is functioing on computers, not mobile devices.  
 The website allows users to browse products, register/login securely, manage their cart and favorites, and enjoy a seamless user experience across all devices.
 
+This full-stack project was heavily inspired and supported by the knowledge I gained through:
+- **[Jonas Schmedtmann](https://www.udemy.com/user/jonasschmedtmann/?kw=jonas+sc&src=sac)’s JavaScript course**,  
+- The **Meta JavaScript course** (for strengthening my fundamentals), and  
+- The **HTML & CSS course** by [Jonas Schmedtmann](https://www.udemy.com/user/jonasschmedtmann/?kw=jonas+sc&src=sac) *(currently in progress)* & many great instructors such as [SuperSimpleDev](https://www.youtube.com/@SuperSimpleDev).
+
+I actively applied what I learned in these courses while building the features and logic of this project.
+
 This project was created as a practical demonstration of my full-stack development skills within my **Computer Engineering** program at Bahçeşehir University, as part of my **double major in Management Engineering**.
 
 > Currently optimized for desktop use. Some features may not function properly on mobile devices.
