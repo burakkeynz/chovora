@@ -1,17 +1,17 @@
 # Chovora – Full-Stack E-commerce Website
 
 **Chovora** is a fully functional e-commerce web application built entirely from scratch using HTML, CSS, vanilla JavaScript, Node.js, and MongoDB.  
-The website allows users to browse products, register/login securely, manage their cart and favorites, and experience a seamless UI across all devices.
+The website allows users to browse products, register/login securely, manage their cart and favorites, and enjoy a seamless user experience across all devices.
 
-This project was created as a practical demonstration of my full-stack development skills within my Computer Engineering program at Bahçeşehir University for my double major Management Engineering program.
+This project was created as a practical demonstration of my full-stack development skills within my **Computer Engineering** program at Bahçeşehir University, as part of my **double major in Management Engineering**.
 
->Built and deployed independently by Burak Ege Kaya — showcasing real-world web development capability, including authentication, RESTful APIs, dynamic UI, and cloud deployment.
+> Built and deployed independently by **Burak Ege Kaya** — showcasing real-world web development capabilities, including authentication, RESTful APIs, dynamic UI handling, cloud-based deployment, and SMTP integration.
 
 ---
 
 ## Live Website
 
-**https://chovora.com**  
+ **https://chovora.com**  
 A live deployment of the project — users can interact with the full experience from login to checkout.
 
 ---
@@ -22,6 +22,7 @@ A live deployment of the project — users can interact with the full experience
 - Add-to-cart and add-to-favorites functionality with session persistence
 - Live product search with dynamic filtering
 - Toast notifications for user feedback
+- SMTP-based contact form with real email delivery (using Nodemailer)
 - Fully responsive layout (mobile & desktop)
 - Cross-browser compatibility (Chrome, Safari, Opera)
 
@@ -39,6 +40,7 @@ A live deployment of the project — users can interact with the full experience
 - MongoDB with Mongoose ODM
 - RESTful API architecture
 - JWT-based authentication system (secure cookies)
+- Nodemailer integration for contact form (SMTP-based mailing)
 
 ### Deployment
 - Vercel (Frontend)
@@ -72,15 +74,19 @@ backend/
 ```
 
 ---
+
 ## Developer
 
 **Burak Ege Kaya**  
-Computer Engineering & Management Engineering (Double Major) Student
-Bahçeşehir University
+Computer Engineering & Management Engineering (Double Major) Student  
+Bahçeşehir University  
 [LinkedIn](https://www.linkedin.com/in/burakegekaya)
 
 ---
 
-## Note-License
+## Note & License
 
-Originally initiated as part of a university marketing course, all aspects of this project — from code and architecture to deployment — were fully designed and implemented for engineering and portfolio demonstration purposes. All rights are reserved.
+Originally initiated as part of a university marketing course, all aspects of this project — from the code and system architecture to the deployment pipeline — were fully designed and implemented to demonstrate software engineering and full-stack development capabilities.  
+It also includes SMTP mailing integration for user contact handling.
+
+All rights reserved.
