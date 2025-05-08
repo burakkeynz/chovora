@@ -31,7 +31,7 @@ A live deployment of the project — users can interact with the full experience
 - Live product search with dynamic filtering
 - Toast notifications for user feedback
 - SMTP-based contact form with real email delivery (using Nodemailer)
-- Fully responsive layout (mobile & desktop)
+- Fully responsive layout (for dekstop users for now)
 - Cross-browser compatibility (Chrome, Safari, Opera)
 
 ---
